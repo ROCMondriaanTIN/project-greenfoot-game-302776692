@@ -9,9 +9,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Checkpoints extends Mover
 {
-    public Checkpoints(){
-        
-    }
     
     /**
      * Act - do whatever the checkpoints wants to do. This method is called whenever
@@ -23,6 +20,8 @@ public class Checkpoints extends Mover
         for (Actor flag : getIntersectingObjects(Hero.class)) {
             if (flag != null) {
                 setImage("flagGreen2.png");
+                checkpointX = getX();
+                checkpointY = getY();
                 break;
             }
         }

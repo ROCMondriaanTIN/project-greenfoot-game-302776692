@@ -51,6 +51,7 @@ public class MyWorld extends World {
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
         Hero hero = new Hero();
+        Coins coin = new Coins();
         Checkpoints cp1 = new Checkpoints();
         cp1.setImage("flagRed2.png");
 
@@ -61,8 +62,12 @@ public class MyWorld extends World {
         addObject(camera, 400, 650);
 
         addObject(hero, 400, 650);
-        addObject(cp1, 500, 1016);
         
+        //Alle checkpoint objecten
+        addObject(cp1, 1577, 1016);
+        
+        //Alle coins objecten
+        addObject(coin, 600, 650);
 
         // Initialiseren van de CollisionEngine zodat de speler niet door de tile heen kan lopen.
         // De collision engine kijkt alleen naar de tiles die de variabele solid op true hebben staan.

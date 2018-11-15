@@ -6,10 +6,12 @@ import greenfoot.*;
  * @author R. Springer
  */
 public class Hero extends Mover {
-
+    
     private final double gravity;
     private final double acc;
     private final double drag;
+    boolean facingLeft;
+    boolean mirror;
     private GreenfootImage stand;
     private GreenfootImage walk1;
     private GreenfootImage walk2;
@@ -27,7 +29,7 @@ public class Hero extends Mover {
     public Hero() {
         super();
         gravity = 9.8;
-        acc = 0.6;
+        acc = 0.3;
         drag = 0.8;
         stand = new GreenfootImage("p1.png");
         walk1 = new GreenfootImage("p1_walk01.png");
@@ -66,10 +68,10 @@ public class Hero extends Mover {
             }
         }
         
+        if(isTouching(DangerousTiles.class)){
+            setLocation(checkpointX, checkpointY);
+        }
         
-        
-
-
     }
     public void handleInput() {
         if (Greenfoot.isKeyDown("w") && velocityY == 0) {
@@ -144,5 +146,7 @@ public class Hero extends Mover {
         return getImage().getHeight();
     }
 
-    
+    public void mirrorHero() {
+        
+    }
 }
