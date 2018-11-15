@@ -97,7 +97,7 @@ public class TileEngine {
         for (int y = 0; y < MAP_HEIGHT; y++) {
             for (int x = 0; x < MAP_WIDTH; x++) {
                 // Nummer ophalen in de int array
-                int mapIcon = this.map[y][x];
+                int mapIcon = this.map[y][x]; 
                 if (mapIcon == -1) {
                     continue;
                 }

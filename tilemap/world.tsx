@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.0" name="world" tilewidth="70" tileheight="146" tilecount="173" columns="0">
+<tileset version="1.2" tiledversion="1.2.0" name="world" tilewidth="129" tileheight="146" tilecount="265" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="70" height="70" source="../images/box.png"/>
@@ -519,5 +519,281 @@
  </tile>
  <tile id="173">
   <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Tiles/grassCenter.png"/>
+ </tile>
+ <tile id="174">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/bomb.png"/>
+ </tile>
+ <tile id="175">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/bombFlash.png"/>
+ </tile>
+ <tile id="176">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/bush.png"/>
+ </tile>
+ <tile id="177">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonBlue.png"/>
+ </tile>
+ <tile id="178">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonBlue_pressed.png"/>
+ </tile>
+ <tile id="179">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonGreen.png"/>
+ </tile>
+ <tile id="180">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonGreen_pressed.png"/>
+ </tile>
+ <tile id="181">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonRed.png"/>
+ </tile>
+ <tile id="182">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonRed_pressed.png"/>
+ </tile>
+ <tile id="183">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonYellow.png"/>
+ </tile>
+ <tile id="184">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/buttonYellow_pressed.png"/>
+ </tile>
+ <tile id="185">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/cactus.png"/>
+ </tile>
+ <tile id="186">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/chain.png"/>
+ </tile>
+ <tile id="187">
+  <image width="128" height="71" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/cloud1.png"/>
+ </tile>
+ <tile id="188">
+  <image width="129" height="71" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/cloud2.png"/>
+ </tile>
+ <tile id="189">
+  <image width="129" height="71" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/cloud3.png"/>
+ </tile>
+ <tile id="190">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/coinBronze.png"/>
+ </tile>
+ <tile id="191">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/coinGold.png"/>
+ </tile>
+ <tile id="192">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/coinSilver.png"/>
+ </tile>
+ <tile id="193">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/fireball.png"/>
+ </tile>
+ <tile id="194">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagBlue.png"/>
+ </tile>
+ <tile id="195">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagBlue2.png"/>
+ </tile>
+ <tile id="196">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagBlueHanging.png"/>
+ </tile>
+ <tile id="197">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagGreen.png"/>
+ </tile>
+ <tile id="198">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagGreen2.png"/>
+ </tile>
+ <tile id="199">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagGreenHanging.png"/>
+ </tile>
+ <tile id="200">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagRed.png"/>
+ </tile>
+ <tile id="201">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagRed2.png"/>
+ </tile>
+ <tile id="202">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagRedHanging.png"/>
+ </tile>
+ <tile id="203">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagYellow.png"/>
+ </tile>
+ <tile id="204">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagYellow2.png"/>
+ </tile>
+ <tile id="205">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/flagYellowHanging.png"/>
+ </tile>
+ <tile id="206">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/gemBlue.png"/>
+ </tile>
+ <tile id="207">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/gemGreen.png"/>
+ </tile>
+ <tile id="208">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/gemRed.png"/>
+ </tile>
+ <tile id="209">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/gemYellow.png"/>
+ </tile>
+ <tile id="210">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/keyBlue.png"/>
+ </tile>
+ <tile id="211">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/keyGreen.png"/>
+ </tile>
+ <tile id="212">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/keyRed.png"/>
+ </tile>
+ <tile id="213">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/keyYellow.png"/>
+ </tile>
+ <tile id="214">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/mushroomBrown.png"/>
+ </tile>
+ <tile id="215">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/mushroomRed.png"/>
+ </tile>
+ <tile id="216">
+  <image width="19" height="14" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/particleBrick1a.png"/>
+ </tile>
+ <tile id="217">
+  <image width="21" height="21" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/particleBrick1b.png"/>
+ </tile>
+ <tile id="218">
+  <image width="19" height="14" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/particleBrick2a.png"/>
+ </tile>
+ <tile id="219">
+  <image width="21" height="21" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/particleBrick2b.png"/>
+ </tile>
+ <tile id="220">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/plant.png"/>
+ </tile>
+ <tile id="221">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/plantPurple.png"/>
+ </tile>
+ <tile id="222">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/rock.png"/>
+ </tile>
+ <tile id="223">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/snowhill.png"/>
+ </tile>
+ <tile id="224">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/spikes.png"/>
+ </tile>
+ <tile id="225">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/springboardDown.png"/>
+ </tile>
+ <tile id="226">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/springboardUp.png"/>
+ </tile>
+ <tile id="227">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/star.png"/>
+ </tile>
+ <tile id="228">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/switchLeft.png"/>
+ </tile>
+ <tile id="229">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/switchMid.png"/>
+ </tile>
+ <tile id="230">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/switchRight.png"/>
+ </tile>
+ <tile id="231">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/weight.png"/>
+ </tile>
+ <tile id="232">
+  <image width="70" height="70" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/Items/weightChained.png"/>
+ </tile>
+ <tile id="233">
+  <image width="30" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_0.png"/>
+ </tile>
+ <tile id="234">
+  <image width="26" height="37" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_1.png"/>
+ </tile>
+ <tile id="235">
+  <image width="32" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_2.png"/>
+ </tile>
+ <tile id="236">
+  <image width="28" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_3.png"/>
+ </tile>
+ <tile id="237">
+  <image width="29" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_4.png"/>
+ </tile>
+ <tile id="238">
+  <image width="28" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_5.png"/>
+ </tile>
+ <tile id="239">
+  <image width="30" height="38" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_6.png"/>
+ </tile>
+ <tile id="240">
+  <image width="32" height="39" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_7.png"/>
+ </tile>
+ <tile id="241">
+  <image width="32" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_8.png"/>
+ </tile>
+ <tile id="242">
+  <image width="32" height="39" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_9.png"/>
+ </tile>
+ <tile id="243">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_coins.png"/>
+ </tile>
+ <tile id="244">
+  <image width="46" height="36" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_gem_blue.png"/>
+ </tile>
+ <tile id="245">
+  <image width="46" height="36" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_gem_green.png"/>
+ </tile>
+ <tile id="246">
+  <image width="46" height="36" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_gem_red.png"/>
+ </tile>
+ <tile id="247">
+  <image width="46" height="36" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_gem_yellow.png"/>
+ </tile>
+ <tile id="248">
+  <image width="53" height="45" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_heartEmpty.png"/>
+ </tile>
+ <tile id="249">
+  <image width="53" height="45" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_heartFull.png"/>
+ </tile>
+ <tile id="250">
+  <image width="53" height="45" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_heartHalf.png"/>
+ </tile>
+ <tile id="251">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyBlue.png"/>
+ </tile>
+ <tile id="252">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyBlue_disabled.png"/>
+ </tile>
+ <tile id="253">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyGreem_disabled.png"/>
+ </tile>
+ <tile id="254">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyGreen.png"/>
+ </tile>
+ <tile id="255">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyRed.png"/>
+ </tile>
+ <tile id="256">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyRed_disabled.png"/>
+ </tile>
+ <tile id="257">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyYellow.png"/>
+ </tile>
+ <tile id="258">
+  <image width="44" height="40" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_keyYellow_disabled.png"/>
+ </tile>
+ <tile id="259">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p1.png"/>
+ </tile>
+ <tile id="260">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p1Alt.png"/>
+ </tile>
+ <tile id="261">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p2.png"/>
+ </tile>
+ <tile id="262">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p2Alt.png"/>
+ </tile>
+ <tile id="263">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p3.png"/>
+ </tile>
+ <tile id="264">
+  <image width="47" height="47" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_p3Alt.png"/>
+ </tile>
+ <tile id="265">
+  <image width="30" height="28" source="../../../../Downloads/platformerGraphicsDeluxeUpdated/platformerGraphicsDeluxeUpdated/HUD/hud_x.png"/>
  </tile>
 </tileset>
