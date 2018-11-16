@@ -25,7 +25,7 @@ public class Hero extends Mover {
     private GreenfootImage walk9;
     private GreenfootImage walk10;
     private GreenfootImage walk11;
-    GreenfootImage[] walkArray = new GreenfootImage[12];
+    GreenfootImage[] walkArray = new GreenfootImage[13];
 
     public Hero() {
         super();
@@ -44,6 +44,7 @@ public class Hero extends Mover {
         walkArray[9] = new GreenfootImage("p1_walk09.png");
         walkArray[10] = new GreenfootImage("p1_walk10.png");
         walkArray[11] = new GreenfootImage("p1_walk11.png");
+        walkArray[12] = new GreenfootImage("p1_stand.png");
 
         setImage(walkArray[0]);
     }
@@ -64,12 +65,12 @@ public class Hero extends Mover {
         for (Actor enemy : getIntersectingObjects(Enemy.class)) {
             if (enemy != null) {
                 getWorld().removeObject(this);
-                break;
+                return;
             }
         }
 
         if(isTouching(DangerousTiles.class)){
-            setLocation(checkpointX, checkpointY);
+            setLocation(1120, 2695);
         }
 
     }
@@ -78,7 +79,9 @@ public class Hero extends Mover {
         if (Greenfoot.isKeyDown("w") && velocityY == 0) {
             velocityY = -10;
         }
-
+        if (Greenfoot.isKeyDown("space")) {
+            velocityY = -10;
+        }
         if (Greenfoot.isKeyDown("a")) {
             mirrorHero();
             facingLeft = true;
