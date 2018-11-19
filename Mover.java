@@ -18,8 +18,7 @@ public class Mover extends Actor {
     private boolean firstLocation = true;
     private boolean hasCamera;
     
-    public static int checkpointX;
-    public static int checkpointY;
+    
 
     /**
      * Methode to set the camera a Mover can have
@@ -40,7 +39,21 @@ public class Mover extends Actor {
             hasCamera = false;
         }
     }
-
+    
+    public boolean onGround() {
+        Tile tile = (Tile)getOneObjectAtOffset(0, getImage().getHeight() / 2, Tile.class);
+        if(tile != null) {
+            if(tile.getIsSolid()) {
+                return true;
+            } else {
+                return false;
+            }    
+        } else {
+            return false;
+        }
+        
+    }
+    
     /**
      * Apply change in position based on velocityX and velocityY
      */

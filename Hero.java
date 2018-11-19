@@ -13,6 +13,8 @@ public class Hero extends Mover {
     boolean facingLeft;
     boolean mirror;
     private int teller = 0;
+    public static double bonusVelocityY;
+    public static double bonusVelocityX;
     private GreenfootImage walk0;
     private GreenfootImage walk1;
     private GreenfootImage walk2;
@@ -25,7 +27,7 @@ public class Hero extends Mover {
     private GreenfootImage walk9;
     private GreenfootImage walk10;
     private GreenfootImage walk11;
-    GreenfootImage[] walkArray = new GreenfootImage[13];
+    GreenfootImage[] walkArray = new GreenfootImage[14];
 
     public Hero() {
         super();
@@ -45,23 +47,28 @@ public class Hero extends Mover {
         walkArray[10] = new GreenfootImage("p1_walk10.png");
         walkArray[11] = new GreenfootImage("p1_walk11.png");
         walkArray[12] = new GreenfootImage("p1_stand.png");
+        walkArray[13] = new GreenfootImage("p1_jump.png");
 
-        setImage(walkArray[0]);
+        setImage(walkArray[12]);
     }
 
     @Override
     public void act() {
-        handleInput();
-
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
             velocityY = gravity;
         }
-        applyVelocity();
-
         getWorld().showText(getX() + ", " + getY(), 500, 30); 
-
+        if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
+            setImage("p1_stand.png");
+            mirrorHero();
+        }
+        if(!onGround()){
+           setImage("p1_jump.png");
+           mirrorHero();
+        }
+        
         for (Actor enemy : getIntersectingObjects(Enemy.class)) {
             if (enemy != null) {
                 getWorld().removeObject(this);
@@ -70,29 +77,46 @@ public class Hero extends Mover {
         }
 
         if(isTouching(DangerousTiles.class)){
-            setLocation(1120, 2695);
+            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+            } else {
+                setLocation(1120, 2695);
+            }
         }
-
+        handleInput();
+        applyVelocity();
     }
 
     public void handleInput() {
-        if (Greenfoot.isKeyDown("w") && velocityY == 0) {
-            velocityY = -10;
+        if(Greenfoot.isKeyDown("h")) {
+            bonusVelocityY = -10;
+        }
+        if (Greenfoot.isKeyDown("w") && onGround()) {
+            if(isTouching(Springboards.class)) { 
+                velocityY = -10 + Springboards.springboardVelocity + bonusVelocityY;
+                mirrorHero();
+            } else {
+                velocityY = -10 + bonusVelocityY;
+                mirrorHero();
+            }
         }
         if (Greenfoot.isKeyDown("space")) {
             velocityY = -10;
         }
         if (Greenfoot.isKeyDown("a")) {
+            if(onGround()) {
+                walkAnimatie();
+            }
             mirrorHero();
             facingLeft = true;
-            walkAnimatie();
             velocityX = -2;
         } else if (Greenfoot.isKeyDown("d")) {
+            if(onGround()) {
+                walkAnimatie();
+            }
             facingLeft = false;
-            mirrorHero();
-            walkAnimatie();
-            velocityX = 2;
-
+                mirrorHero();
+            velocityX = 2 + bonusVelocityX;
         }
     }
 
