@@ -12,25 +12,35 @@ public class Hero extends Mover {
     private final double drag;
     boolean facingLeft;
     boolean mirror;
+    static boolean redKeyCheck;
+    static boolean blueKeyCheck;
+    static boolean yellowKeyCheck;
+    static boolean greenKeyCheck;
+    public static boolean buttonPressed;
     private int teller = 0;
     public static double bonusVelocityY;
     public static double bonusVelocityX;
-    private GreenfootImage walk0;
-    private GreenfootImage walk1;
-    private GreenfootImage walk2;
-    private GreenfootImage walk3;
-    private GreenfootImage walk4;
-    private GreenfootImage walk5;
-    private GreenfootImage walk6;
-    private GreenfootImage walk7;
-    private GreenfootImage walk8;
-    private GreenfootImage walk9;
-    private GreenfootImage walk10;
-    private GreenfootImage walk11;
+    public static int score;
+    private static Health health1;
+    private static Health health2;
+    private static Health health3;
+    public static int totalHealth = 3;
+    private Hud redKeyHud;
+    private Hud greenKeyHud;
+    private Hud yellowKeyHud;
+    private Hud blueKeyHud;
     GreenfootImage[] walkArray = new GreenfootImage[14];
+    private GreenfootImage redKey = new GreenfootImage("hud_keyRed.png");
 
-    public Hero() {
+    public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
         super();
+        this.redKeyHud = redKeyHud;
+        this.greenKeyHud = greenKeyHud;
+        this.yellowKeyHud = yellowKeyHud;
+        this.blueKeyHud = blueKeyHud;
+        this.health1 = health1;
+        this.health2 = health2;
+        this.health3 = health3;
         gravity = 9.8;
         acc = 0.3;
         drag = 0.8;
@@ -49,57 +59,31 @@ public class Hero extends Mover {
         walkArray[12] = new GreenfootImage("p1_stand.png");
         walkArray[13] = new GreenfootImage("p1_jump.png");
 
-        setImage(walkArray[12]);
+        setImage("p1_stand.png");
     }
 
     @Override
     public void act() {
+        handleInput();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
             velocityY = gravity;
         }
-        getWorld().showText(getX() + ", " + getY(), 500, 30); 
+        if(!onGround()) {
+            setImage(walkArray[13]);
+        }
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
-            setImage("p1_stand.png");
-            mirrorHero();
-        }
-        if(!onGround()){
-           setImage("p1_jump.png");
-           mirrorHero();
-        }
-        
-        for (Actor enemy : getIntersectingObjects(Enemy.class)) {
-            if (enemy != null) {
-                getWorld().removeObject(this);
-                return;
-            }
-        }
-
-        if(isTouching(DangerousTiles.class)){
-            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
-                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
-            } else {
-                setLocation(1120, 2695);
-            }
-        }
-        handleInput();
+            setImage("p1_front.png");
+        }        
+        Health();
+        KeysInterface();
         applyVelocity();
+        getWorld().showText(getX() + ", " + getY(), 500, 30); 
+        getWorld().showText("Score: " + score, 300, 30); 
     }
 
     public void handleInput() {
-        if(Greenfoot.isKeyDown("h")) {
-            bonusVelocityY = -10;
-        }
-        if (Greenfoot.isKeyDown("w") && onGround()) {
-            if(isTouching(Springboards.class)) { 
-                velocityY = -10 + Springboards.springboardVelocity + bonusVelocityY;
-                mirrorHero();
-            } else {
-                velocityY = -10 + bonusVelocityY;
-                mirrorHero();
-            }
-        }
         if (Greenfoot.isKeyDown("space")) {
             velocityY = -10;
         }
@@ -109,21 +93,70 @@ public class Hero extends Mover {
             }
             mirrorHero();
             facingLeft = true;
-            velocityX = -2;
+            velocityX = -2 + bonusVelocityX;
         } else if (Greenfoot.isKeyDown("d")) {
             if(onGround()) {
                 walkAnimatie();
             }
+            mirrorHero();
             facingLeft = false;
-                mirrorHero();
             velocityX = 2 + bonusVelocityX;
+        }
+        if (Greenfoot.isKeyDown("w") && onGround()) {
+            if(isTouching(Springboards.class)) { 
+                velocityY = -10 + Springboards.springboardVelocity + bonusVelocityY;
+            } else {
+                velocityY = -10 + bonusVelocityY;
+            }
+        }
+
+    }
+
+    public void Health() {
+        if(totalHealth == 3) {
+            health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
+            health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
+            health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
+        } else if(totalHealth == 2) {
+            health3.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 170, 30);
+        } else if(totalHealth == 1) {
+            health2.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 110, 30);
+        } else if(totalHealth <= 0) {
+            health1.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 50, 30);
+            getWorld().addObject(new GameOver(), getWorld().getWidth()/2, getWorld().getHeight()/2);
+            setImage("p1_gameOver.png");
+            Greenfoot.stop();          
+        }
+
+        if(isTouching(DangerousTiles.class) ){
+            //if(totalHealth > 0) {
+                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+                } else {
+                    setLocation(1120, 2695);
+                }
+            //}
+            totalHealth = totalHealth - 1;
+        }
+        if(isTouching(Enemy.class)) {
+            
+                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+                    totalHealth -= 1;
+                } else {
+                    setLocation(1120, 2695);
+                    totalHealth -= 1;
+                }
+                
+                
+            
         }
     }
 
     public void walkAnimatie() {
         setImage(walkArray[teller]);
         teller++;
-        if(teller >= 11){
+        if(teller >= 13){
             teller = 0;
         }  
     }
@@ -150,6 +183,36 @@ public class Hero extends Mover {
         if(facingLeft == true && mirror == false){
             mirrorImage();
             mirror = true;
+        }
+    }
+
+    public void Score() {
+        if(isTouching(Keys.class)) {
+            score = score + 10;
+        }
+        
+    }
+
+    public void KeysInterface() {
+        if(redKeyCheck == false) {
+            redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
+        }
+        if(greenKeyCheck == false) {
+            greenKeyHud.addKey(new GreenfootImage("hud_keyGreem_disabled.png"), 850, 30);
+        }
+        if(yellowKeyCheck == false) {
+            yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow_disabled.png"), 900, 30);
+        }
+        if(blueKeyCheck == false) {
+            blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
+        }
+        if(isTouching(Keys.class) && redKeyCheck == false) {
+            if(this != null) {
+                redKeyCheck = true;
+                redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 700, 30);
+                score += 10;
+                removeTouching(Keys.class);
+            }
         }
     }
 }

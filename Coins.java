@@ -8,6 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Coins extends Tile
 {
+    
     public Coins(String image, int width, int height) {
         super(image, width, height);
     }
@@ -17,9 +18,11 @@ public class Coins extends Tile
      */
     public void act() 
     {
+        
         setImage("coinGold.png");
         if(isTouching(Hero.class)){
             getWorld().removeObject(this);
+            Hero.score += 10;
         }
         
     }    

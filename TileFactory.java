@@ -129,7 +129,7 @@ public class TileFactory {
             tile = new DangerousTiles("bomb.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 181:
-            tile = new Tile("buttonRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new Buttons("buttonRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;    
             case 186:
             tile = new Tile("chain.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
@@ -141,10 +141,13 @@ public class TileFactory {
             tile = new Checkpoints("flagRed2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 206:
-            tile = new Powerup("gemBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new JumpPowerup("gemBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 207:
+            tile = new Tile("gemGreen.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 212:
-            tile = new Tile("keyRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new Keys("keyRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 224:
             tile = new DangerousTiles("spikes.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
@@ -159,7 +162,7 @@ public class TileFactory {
             tile = new Tile("keyYellow.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 266:
-            tile = new Tile("castleCenter.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new SecretWall("castleCenter.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             tile.isSolid = true;
             break;
             default:

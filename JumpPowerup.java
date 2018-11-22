@@ -6,12 +6,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Powerup extends Tile
+public class JumpPowerup extends Tile
 {
-    
-    private GreenfootImage blueGem = new GreenfootImage("gemBlue.png");
-    
-    public Powerup(String image, int width, int height) {
+    public JumpPowerup(String image, int width, int height) {
         super(image, width, height);
     }
     /**
@@ -20,12 +17,6 @@ public class Powerup extends Tile
      */
     public void act() 
     {
-        blueGem = getImage();
-        if(isTouching(Hero.class)){
-            if (getImage() == blueGem){
-                Hero.bonusVelocityY = -2;
-            }
-            getWorld().removeObject(this);
-        }
+        
     }    
 }
