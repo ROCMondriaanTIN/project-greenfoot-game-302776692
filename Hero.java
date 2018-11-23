@@ -11,41 +11,41 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    boolean facingLeft;
-    boolean mirror;
+    private boolean facingLeft;
+    private boolean mirror;
     public boolean redKeyCheck;
     public boolean blueKeyCheck;
     public boolean yellowKeyCheck;
     public boolean greenKeyCheck;
-    public static boolean buttonPressed;
-    private int teller = 0;
+    public boolean isHit;
     public static double bonusVelocityY;
     public static double bonusVelocityX;
     public static int score;
-    private static Health health1;
-    private static Health health2;
-    private static Health health3;
     public static int totalHealth = 3;
+    private int teller = 0;
+    private int hitTeller = 0;
+    private Health health1;
+    private Health health2;
+    private Health health3;
     private Hud redKeyHud;
     private Hud greenKeyHud;
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
     GreenfootImage[] walkArray = new GreenfootImage[14];
     ArrayList <String> keyColor = new ArrayList<String>();
-    private GreenfootImage redKey = new GreenfootImage("hud_keyRed.png");
 
     public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
         super();
+        gravity = 9.8;
+        acc = 0.3;
+        drag = 0.8;
         this.redKeyHud = redKeyHud;
         this.greenKeyHud = greenKeyHud;
         this.yellowKeyHud = yellowKeyHud;
         this.blueKeyHud = blueKeyHud;
         this.health1 = health1;
         this.health2 = health2;
-        this.health3 = health3;
-        gravity = 9.8;
-        acc = 0.3;
-        drag = 0.8;
+        this.health3 = health3;      
         walkArray[0] = new GreenfootImage("p1.png");
         walkArray[1] = new GreenfootImage("p1_walk01.png");
         walkArray[2] = new GreenfootImage("p1_walk02.png");
@@ -65,36 +65,28 @@ public class Hero extends Mover {
     }
 
     @Override
-    public void act() {
-        handleInput();
+    public void act() {    
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
             velocityY = gravity;
-        }
-        if(!onGround()) {
-            setImage(walkArray[13]);
-        }
-        if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
-            setImage("p1_front.png");
-        }        
-        for(Keys key : getIntersectingObjects(Keys.class)) {
-            if(key != null) {
-                //key.getKeyColor();
-                if(!keyColor.contains(key.getKeyColor())) {
-                    keyColor.add(key.getKeyColor());
-                }
-            }
-        }
+        }   
+        handleMovement();
         checkKey();
         Health();
         KeysInterface();
         applyVelocity();
-        getWorld().showText(getX() + ", " + getY(), 500, 30); 
-        getWorld().showText("Score: " + score, 300, 30); 
+        Score();
+        getWorld().showText(getX() + ", " + getY(), 500, 30);     
     }
 
-    public void handleInput() {
+    public void handleMovement() {
+        if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
+            setImage("p1_front.png");
+        }
+        if(!onGround()) {
+            setImage(walkArray[13]);
+        }
         if (Greenfoot.isKeyDown("space")) {
             velocityY = -10;
         }
@@ -120,7 +112,6 @@ public class Hero extends Mover {
                 velocityY = -10 + bonusVelocityY;
             }
         }
-
     }
 
     public void Health() {
@@ -138,30 +129,50 @@ public class Hero extends Mover {
             setImage("p1_gameOver.png");
             Greenfoot.stop();          
         }
-
-        if(isTouching(DangerousTiles.class) ){
-            //if(totalHealth > 0) {
+        if(isTouching(DangerousTiles.class)){
             if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
                 setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
             } else {
                 setLocation(1120, 2695);
             }
-            //}
+            //getWorld().showText("totalHealth: " + totalHealth, 300, 60);
             totalHealth = totalHealth - 1;
+            //getWorld().showText("totalHealth: " + totalHealth, 300, 80);
+
         }
         if(isTouching(Enemy.class)) {
-
-            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
-                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
-                totalHealth -= 1;
-            } else {
-                setLocation(1120, 2695);
-                totalHealth -= 1;
-            }
-
+           //if(enemy != null) {
+                System.out.println(totalHealth);
+                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0 && isHit == false) {
+                    isHit = true;
+                    setNewLocation(); 
+                    //removeTouching(Enemy.class);
+                    getWorld().showText("totalHealth: " + totalHealth, 300, 60);
+                    totalHealth = totalHealth - 1;  
+                    getWorld().showText("totalHealth: " + totalHealth, 300, 80);                  
+                } else {
+                    //getWorld().showText("totalHealth: " + totalHealth, 300, 100);
+                    //totalHealth = totalHealth - 1;                
+                    //getWorld().showText("totalHealth: " + totalHealth, 300, 120);
+                    //setLocation(1120, 2695);
+                    //removeTouching(Enemy.class);
+                }
+                //totalHealth = totalHealth + 1;
+            //}
         }
     }
-
+    
+    public void setNewLocation() {
+        setLocation(1120, 2695);
+        hitTeller++;
+        if(hitTeller == 4) {
+            isHit = false;
+            hitTeller = 0;
+        }
+        System.out.println(isHit);
+        //isHit = false;
+    }
+    
     public void walkAnimatie() {
         setImage(walkArray[teller]);
         teller++;
@@ -196,14 +207,21 @@ public class Hero extends Mover {
     }
 
     public void Score() {
+        getWorld().showText("Score: " + score, 300, 30);
         if(isTouching(Keys.class)) {
-            //score = score + 10;
+            score = score + 50;
         }
-
     }
 
     public void checkKey() {
         boolean empty = keyColor.isEmpty();
+        for(Keys key : getIntersectingObjects(Keys.class)) {
+            if(key != null) {
+                if(!keyColor.contains(key.getKeyColor())) {
+                    keyColor.add(key.getKeyColor());
+                }
+            }
+        }        
         if(!empty) {
             for(int i = 0; i < keyColor.size(); i++) {
                 if(keyColor.get(i).equals("Red")){
@@ -231,7 +249,6 @@ public class Hero extends Mover {
     }
 
     public void KeysInterface() {
-        checkKey();
         if(redKeyCheck == false) {
             redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
         } 
@@ -243,12 +260,6 @@ public class Hero extends Mover {
         } 
         if(blueKeyCheck == false) {
             blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
-        } 
-        if(redKeyCheck == true) {
-            redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 800, 30);
-
-        } 
-
-
+        }         
     }
 }
