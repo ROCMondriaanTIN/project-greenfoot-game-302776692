@@ -8,10 +8,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Keys extends Tile
 {
-    private GreenfootImage redKey = new GreenfootImage("hud_keyRed.png");
+    //private GreenfootImage redKey = new GreenfootImage("hud_keyRed.png");
+    public String color;
     public Keys(String image, int width, int height) {
         super(image, width, height);
+        int begin = 3;
+        int end = image.indexOf(".");
+        color = image.substring(begin,end);
     }
+
     /**
      * Act - do whatever the Keys wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -19,10 +24,11 @@ public class Keys extends Tile
     public void act() 
     {
         if(isTouching(Hero.class)) {
-            if(getImage() == redKey) {
-                getWorld().removeObject(this);  
-                Hero.redKeyCheck = true;
-            }
+            //getWorld().removeObject(this);  
         }
-    }    
+    }
+
+    public String getKeyColor() {
+        return color;
+    }
 }

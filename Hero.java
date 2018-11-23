@@ -1,5 +1,6 @@
 
 import greenfoot.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,10 +13,10 @@ public class Hero extends Mover {
     private final double drag;
     boolean facingLeft;
     boolean mirror;
-    static boolean redKeyCheck;
-    static boolean blueKeyCheck;
-    static boolean yellowKeyCheck;
-    static boolean greenKeyCheck;
+    public boolean redKeyCheck;
+    public boolean blueKeyCheck;
+    public boolean yellowKeyCheck;
+    public boolean greenKeyCheck;
     public static boolean buttonPressed;
     private int teller = 0;
     public static double bonusVelocityY;
@@ -30,6 +31,7 @@ public class Hero extends Mover {
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
     GreenfootImage[] walkArray = new GreenfootImage[14];
+    ArrayList <String> keyColor = new ArrayList<String>();
     private GreenfootImage redKey = new GreenfootImage("hud_keyRed.png");
 
     public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
@@ -76,6 +78,15 @@ public class Hero extends Mover {
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
         }        
+        for(Keys key : getIntersectingObjects(Keys.class)) {
+            if(key != null) {
+                //key.getKeyColor();
+                if(!keyColor.contains(key.getKeyColor())) {
+                    keyColor.add(key.getKeyColor());
+                }
+            }
+        }
+        checkKey();
         Health();
         KeysInterface();
         applyVelocity();
@@ -130,26 +141,24 @@ public class Hero extends Mover {
 
         if(isTouching(DangerousTiles.class) ){
             //if(totalHealth > 0) {
-                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
-                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
-                } else {
-                    setLocation(1120, 2695);
-                }
+            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+            } else {
+                setLocation(1120, 2695);
+            }
             //}
             totalHealth = totalHealth - 1;
         }
         if(isTouching(Enemy.class)) {
-            
-                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
-                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
-                    totalHealth -= 1;
-                } else {
-                    setLocation(1120, 2695);
-                    totalHealth -= 1;
-                }
-                
-                
-            
+
+            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+                totalHealth -= 1;
+            } else {
+                setLocation(1120, 2695);
+                totalHealth -= 1;
+            }
+
         }
     }
 
@@ -188,31 +197,58 @@ public class Hero extends Mover {
 
     public void Score() {
         if(isTouching(Keys.class)) {
-            score = score + 10;
+            //score = score + 10;
         }
-        
+
+    }
+
+    public void checkKey() {
+        boolean empty = keyColor.isEmpty();
+        if(!empty) {
+            for(int i = 0; i < keyColor.size(); i++) {
+                if(keyColor.get(i).equals("Red")){
+                    redKeyCheck = true;
+                    redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 800, 30);
+                    continue;
+                }
+                if(("Green").equals(keyColor.get(i))) {
+                    greenKeyCheck = true;
+                    greenKeyHud.addKey(new GreenfootImage("hud_keyGreen.png"), 850, 30);
+                    continue;
+                }
+                if(("Blue").equals(keyColor.get(i))) {
+                    blueKeyCheck = true;
+                    blueKeyHud.addKey(new GreenfootImage("hud_keyBlue.png"), 950, 30);
+                    continue;
+                }
+                if(("Yellow").equals(keyColor.get(i))) {
+                    yellowKeyCheck = true;
+                    yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow.png"), 900, 30);
+                    continue;
+                }
+            }
+        }
     }
 
     public void KeysInterface() {
+        checkKey();
         if(redKeyCheck == false) {
             redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
-        }
+        } 
         if(greenKeyCheck == false) {
             greenKeyHud.addKey(new GreenfootImage("hud_keyGreem_disabled.png"), 850, 30);
-        }
+        } 
         if(yellowKeyCheck == false) {
             yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow_disabled.png"), 900, 30);
-        }
+        } 
         if(blueKeyCheck == false) {
             blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
-        }
-        if(isTouching(Keys.class) && redKeyCheck == false) {
-            if(this != null) {
-                redKeyCheck = true;
-                redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 700, 30);
-                score += 10;
-                removeTouching(Keys.class);
-            }
-        }
+        } 
+        if(redKeyCheck == true) {
+            redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 800, 30);
+
+        } 
+
+
     }
 }

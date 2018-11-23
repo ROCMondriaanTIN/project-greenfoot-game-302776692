@@ -146,8 +146,17 @@ public class TileFactory {
             case 207:
             tile = new Tile("gemGreen.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
+            case 210:
+            tile = new Keys("keyBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 211:
+            tile = new Keys("keyGreen.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
             case 212:
             tile = new Keys("keyRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 213:
+            tile = new Keys("keyYellow.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 224:
             tile = new DangerousTiles("spikes.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
