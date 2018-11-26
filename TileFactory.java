@@ -141,10 +141,16 @@ public class TileFactory {
             tile = new Checkpoints("flagRed2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 206:
-            tile = new JumpPowerup("gemBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new Powerups("gemBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 207:
-            tile = new Tile("gemGreen.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new Powerups("gemGreen.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 208:
+            tile = new Powerups("gemRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 209:
+            tile = new Powerups("gemYellow.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 210:
             tile = new Keys("keyBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);

@@ -6,10 +6,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class JumpPowerup extends Tile
+public class Powerups extends Tile
 {
-    public JumpPowerup(String image, int width, int height) {
+    public String colorPowerup;
+    public Powerups(String image, int width, int height) {
         super(image, width, height);
+        int begin = 3;
+        int end = image.indexOf(".");
+        colorPowerup = image.substring(begin,end);
     }
     /**
      * Act - do whatever the Powerup wants to do. This method is called whenever
@@ -17,6 +21,12 @@ public class JumpPowerup extends Tile
      */
     public void act() 
     {
-        
-    }    
+        if(isTouching(Hero.class)) {
+            getWorld().removeObject(this);  
+        }
+    } 
+    
+    public String getPowerupColor() {
+        return colorPowerup;
+    }
 }

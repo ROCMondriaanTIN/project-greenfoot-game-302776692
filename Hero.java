@@ -11,19 +11,30 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
+    
+    //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
     private boolean mirror;
+    private int teller = 0;
+    
+    //Deze 4 zijn voor de key interface en de locks
     public boolean redKeyCheck;
     public boolean blueKeyCheck;
     public boolean yellowKeyCheck;
     public boolean greenKeyCheck;
+    
+    //Deze 3 zijn voor de health
     public boolean isHit;
+    public static int totalHealth = 3;
+    private int hitTeller = 0;
+    
+    //Deze 3 zijn voor de powerups en score
     public static double bonusVelocityY;
     public static double bonusVelocityX;
     public static int score;
-    public static int totalHealth = 3;
-    private int teller = 0;
-    private int hitTeller = 0;
+    
+    
+    //Deze zijn voor de interface
     private Health health1;
     private Health health2;
     private Health health3;
@@ -31,11 +42,17 @@ public class Hero extends Mover {
     private Hud greenKeyHud;
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
+    
+    //Arrays
     GreenfootImage[] walkArray = new GreenfootImage[14];
     ArrayList <String> keyColor = new ArrayList<String>();
-
+    ArrayList <String> powerupColor = new ArrayList<String>();
+    
     public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
+        
         super();
+        //World2 world2 = new World2();
+        //Greenfoot.setWorld(world2);
         gravity = 9.8;
         acc = 0.3;
         drag = 0.8;
@@ -66,6 +83,7 @@ public class Hero extends Mover {
 
     @Override
     public void act() {    
+        
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -77,9 +95,12 @@ public class Hero extends Mover {
         KeysInterface();
         applyVelocity();
         Score();
+        isHit();
+        getPowerup();
+        setCheckpoints();
         getWorld().showText(getX() + ", " + getY(), 500, 30);     
     }
-
+    
     public void handleMovement() {
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
@@ -96,7 +117,7 @@ public class Hero extends Mover {
             }
             mirrorHero();
             facingLeft = true;
-            velocityX = -2 + bonusVelocityX;
+            velocityX = -2 - bonusVelocityX;
         } else if (Greenfoot.isKeyDown("d")) {
             if(onGround()) {
                 walkAnimatie();
@@ -115,10 +136,17 @@ public class Hero extends Mover {
     }
 
     public void Health() {
-        if(totalHealth == 3) {
+        if(totalHealth > 3) {
+            int extraHealth = totalHealth - 3;
             health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
             health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
             health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
+            getWorld().showText(" + " + extraHealth, 215, 30);
+        } else if(totalHealth == 3) {
+            health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
+            health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
+            health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
+            getWorld().showText("", 215, 30);
         } else if(totalHealth == 2) {
             health3.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 170, 30);
         } else if(totalHealth == 1) {
@@ -135,44 +163,34 @@ public class Hero extends Mover {
             } else {
                 setLocation(1120, 2695);
             }
-            //getWorld().showText("totalHealth: " + totalHealth, 300, 60);
-            totalHealth = totalHealth - 1;
-            //getWorld().showText("totalHealth: " + totalHealth, 300, 80);
-
+            totalHealth = totalHealth - 1;            
         }
         if(isTouching(Enemy.class)) {
-           //if(enemy != null) {
-                System.out.println(totalHealth);
-                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0 && isHit == false) {
+            if(isHit == false) {
+                if(Checkpoints.checkpointX > 1 && Checkpoints.checkpointY > 1) {
                     isHit = true;
-                    setNewLocation(); 
-                    //removeTouching(Enemy.class);
-                    getWorld().showText("totalHealth: " + totalHealth, 300, 60);
-                    totalHealth = totalHealth - 1;  
-                    getWorld().showText("totalHealth: " + totalHealth, 300, 80);                  
+                    totalHealth = totalHealth - 1;
+                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY); 
                 } else {
-                    //getWorld().showText("totalHealth: " + totalHealth, 300, 100);
-                    //totalHealth = totalHealth - 1;                
-                    //getWorld().showText("totalHealth: " + totalHealth, 300, 120);
-                    //setLocation(1120, 2695);
-                    //removeTouching(Enemy.class);
-                }
-                //totalHealth = totalHealth + 1;
-            //}
+                    isHit = true;
+                    setLocation(1120, 2695);
+                    totalHealth = totalHealth - 1;
+                    System.out.println("test");
+                } 
+            } 
         }
     }
-    
-    public void setNewLocation() {
-        setLocation(1120, 2695);
-        hitTeller++;
-        if(hitTeller == 4) {
-            isHit = false;
-            hitTeller = 0;
-        }
-        System.out.println(isHit);
-        //isHit = false;
+
+    public void isHit() {       
+        if(isHit == true) {
+            if(hitTeller == 10) {
+                isHit = false;
+                hitTeller = 0;                
+            }
+            hitTeller++;
+        }       
     }
-    
+
     public void walkAnimatie() {
         setImage(walkArray[teller]);
         teller++;
@@ -213,6 +231,37 @@ public class Hero extends Mover {
         }
     }
 
+    public void getPowerup() {
+        boolean isEmpty = powerupColor.isEmpty();
+        for(Powerups powerup : getIntersectingObjects(Powerups.class)) {
+            if(powerup != null) {
+                if(!powerupColor.contains(powerup.getPowerupColor())) {
+                    powerupColor.add(powerup.getPowerupColor());
+                }
+            }
+        }
+        if(!isEmpty) {
+            for(int i = 0; i < powerupColor.size(); i++) {
+                if(powerupColor.get(i).equals("Blue")) { 
+                    bonusVelocityY = -2;
+                    powerupColor.remove(i);
+                    continue;
+                }
+                if(powerupColor.get(i).equals("Red")) { 
+                    totalHealth += 1;
+                    powerupColor.remove(i);
+                    continue;
+                }
+                if(powerupColor.get(i).equals("Yellow")) { 
+                    bonusVelocityX = 1;
+                    powerupColor.remove(i);
+                    continue;
+                }
+            
+        }
+        }
+    }
+    
     public void checkKey() {
         boolean empty = keyColor.isEmpty();
         for(Keys key : getIntersectingObjects(Keys.class)) {
@@ -261,5 +310,16 @@ public class Hero extends Mover {
         if(blueKeyCheck == false) {
             blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
         }         
+    }
+    
+    public void setCheckpoints() {
+        for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
+            if (hero != null) {
+                Checkpoints.checkpointX = getX();
+                Checkpoints.checkpointY = getY();
+                //System.out.println(Checkpoints.checkpointX + ", " + Checkpoints.checkpointY);
+                break;
+            }
+        }
     }
 }

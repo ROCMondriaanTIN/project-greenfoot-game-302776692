@@ -13,23 +13,19 @@ public class Checkpoints extends Tile
         super(image, width, height);
     }
     public static int checkpointX;
-    public static int checkpointY;
+    public static int checkpointY; 
+    
     /**
      * Act - do whatever the checkpoints wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act() 
-    {
-        
+    {        
         for (Actor flag : getIntersectingObjects(Hero.class)) {
             if (flag != null) {
-                setImage("flagGreen2.png");
-                checkpointX = getX();
-                checkpointY = getY();
+                setImage("flagGreen2.png");               
                 break;
             }
-        }
-        
-    }    
-    
+        }        
+    }        
 }
