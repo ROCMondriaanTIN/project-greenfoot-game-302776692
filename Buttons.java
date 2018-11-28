@@ -8,6 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Buttons extends Tile
 {
+    public static boolean door1;
+    public static final GreenfootImage openImage = new GreenfootImage("door_openMid.png");
     public Buttons(String image, int width, int height) {
         super(image, width, height);
     }
@@ -21,7 +23,11 @@ public class Buttons extends Tile
     }   
     public void isTouchingButton() {
         if(isTouching(Hero.class)) {
+            //if(getX() == 491) {
             setImage("buttonRed_pressed.png");
+            Hero.buttonPressed = true;
+            //getWorld().addObject(doors, 491, 485);
+        //}
         } 
     }
 }

@@ -11,29 +11,31 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    
+
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
     private boolean mirror;
     private int teller = 0;
-    
+
     //Deze 4 zijn voor de key interface en de locks
-    public boolean redKeyCheck;
-    public boolean blueKeyCheck;
-    public boolean yellowKeyCheck;
-    public boolean greenKeyCheck;
-    
+    public static boolean redKeyCheck;
+    public static boolean blueKeyCheck;
+    public static boolean yellowKeyCheck;
+    public static boolean greenKeyCheck;
+
     //Deze 3 zijn voor de health
     public boolean isHit;
     public static int totalHealth = 3;
     private int hitTeller = 0;
-    
+
     //Deze 3 zijn voor de powerups en score
     public static double bonusVelocityY;
     public static double bonusVelocityX;
     public static int score;
     
-    
+    //Secret wall
+    public static boolean buttonPressed;
+
     //Deze zijn voor de interface
     private Health health1;
     private Health health2;
@@ -42,17 +44,16 @@ public class Hero extends Mover {
     private Hud greenKeyHud;
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
-    
+
     //Arrays
     GreenfootImage[] walkArray = new GreenfootImage[14];
     ArrayList <String> keyColor = new ArrayList<String>();
     ArrayList <String> powerupColor = new ArrayList<String>();
-    
+
     public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
-        
+
         super();
-        //World2 world2 = new World2();
-        //Greenfoot.setWorld(world2);
+        
         gravity = 9.8;
         acc = 0.3;
         drag = 0.8;
@@ -83,7 +84,7 @@ public class Hero extends Mover {
 
     @Override
     public void act() {    
-        
+       
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -98,9 +99,10 @@ public class Hero extends Mover {
         isHit();
         getPowerup();
         setCheckpoints();
+        Doors();
         getWorld().showText(getX() + ", " + getY(), 500, 30);     
     }
-    
+
     public void handleMovement() {
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
@@ -134,6 +136,17 @@ public class Hero extends Mover {
             }
         }
     }
+    
+    
+    public void Doors() {
+        if(isTouching(Doors.class)) {
+            if(Greenfoot.isKeyDown("s")) {
+                if(getX() >= 2300 && getX() <= 2370 && getY() >= 3100 && getY() <= 3150) {
+                    setLocation(2630, 3116); 
+                }
+            }
+        }
+    }
 
     public void Health() {
         if(totalHealth > 3) {
@@ -154,7 +167,7 @@ public class Hero extends Mover {
         } else if(totalHealth <= 0) {
             health1.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 50, 30);
             getWorld().addObject(new GameOver(), getWorld().getWidth()/2, getWorld().getHeight()/2);
-            setImage("p1_gameOver.png");
+            setImage("invisible.png");
             Greenfoot.stop();          
         }
         if(isTouching(DangerousTiles.class)){
@@ -175,7 +188,6 @@ public class Hero extends Mover {
                     isHit = true;
                     setLocation(1120, 2695);
                     totalHealth = totalHealth - 1;
-                    System.out.println("test");
                 } 
             } 
         }
@@ -257,11 +269,11 @@ public class Hero extends Mover {
                     powerupColor.remove(i);
                     continue;
                 }
-            
-        }
+
+            }
         }
     }
-    
+
     public void checkKey() {
         boolean empty = keyColor.isEmpty();
         for(Keys key : getIntersectingObjects(Keys.class)) {
@@ -311,13 +323,12 @@ public class Hero extends Mover {
             blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
         }         
     }
-    
+
     public void setCheckpoints() {
         for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
             if (hero != null) {
                 Checkpoints.checkpointX = getX();
-                Checkpoints.checkpointY = getY();
-                //System.out.println(Checkpoints.checkpointX + ", " + Checkpoints.checkpointY);
+                Checkpoints.checkpointY = getY();             
                 break;
             }
         }

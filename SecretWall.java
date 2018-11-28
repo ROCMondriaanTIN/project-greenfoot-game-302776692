@@ -17,7 +17,10 @@ public class SecretWall extends Tile
      */
     public void act() 
     {
-        
+        if(Hero.buttonPressed == true) {
+            setImage("invisible.png");
+            this.isSolid = false;
+        }
     }  
     
 }
