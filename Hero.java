@@ -23,15 +23,19 @@ public class Hero extends Mover {
     public static boolean yellowKeyCheck;
     public static boolean greenKeyCheck;
 
-    //Deze 3 zijn voor de health
-    public boolean isHit;
-    public static int totalHealth = 3;
-    private int hitTeller = 0;
 
     //Deze 3 zijn voor de powerups en score
     public static double bonusVelocityY;
     public static double bonusVelocityX;
+    public static int jumpPowerups = 0;
+    public static int speedPowerup = 0;
+    public static int healthPowerup = 0;
     public static int score;
+    
+    //Deze 3 zijn voor de health
+    public boolean isHit;    
+    private int hitTeller = 0;
+    public static int totalHealth = 3 + healthPowerup;
     
     //Secret wall
     public static boolean buttonPressed;
@@ -149,12 +153,11 @@ public class Hero extends Mover {
     }
 
     public void Health() {
-        if(totalHealth > 3) {
-            int extraHealth = totalHealth - 3;
+        if(totalHealth > 3) {            
             health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
             health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
             health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
-            getWorld().showText(" + " + extraHealth, 215, 30);
+            getWorld().showText(" + " + healthPowerup, 215, 30);
         } else if(totalHealth == 3) {
             health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
             health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
@@ -257,10 +260,11 @@ public class Hero extends Mover {
                 if(powerupColor.get(i).equals("Blue")) { 
                     bonusVelocityY = -2;
                     powerupColor.remove(i);
+                    jumpPowerups = jumpPowerups + 1;
                     continue;
                 }
                 if(powerupColor.get(i).equals("Red")) { 
-                    totalHealth += 1;
+                    healthPowerup += 1;
                     powerupColor.remove(i);
                     continue;
                 }
@@ -269,7 +273,6 @@ public class Hero extends Mover {
                     powerupColor.remove(i);
                     continue;
                 }
-
             }
         }
     }
