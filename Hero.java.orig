@@ -1,7 +1,6 @@
 
 import greenfoot.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -12,7 +11,6 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    
 
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
@@ -38,7 +36,9 @@ public class Hero extends Mover {
     public boolean isHit;    
     private int hitTeller = 0;
     public static int totalHealth = 3 + healthPowerup;
-     
+    
+    //Secret wall
+    public static boolean buttonPressed;
 
     //Deze zijn voor de interface
     private Health health1;
@@ -48,17 +48,16 @@ public class Hero extends Mover {
     private Hud greenKeyHud;
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
-    public static TileEngine tileEngine;
-
-    
 
     //Arrays
     GreenfootImage[] walkArray = new GreenfootImage[14];
     ArrayList <String> keyColor = new ArrayList<String>();
     ArrayList <String> powerupColor = new ArrayList<String>();
 
-    public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3, TileEngine tileEngine) {
-        super();        
+    public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3) {
+
+        super();
+        
         gravity = 9.8;
         acc = 0.3;
         drag = 0.8;
@@ -69,9 +68,6 @@ public class Hero extends Mover {
         this.health1 = health1;
         this.health2 = health2;
         this.health3 = health3;      
-        this.tileEngine = tileEngine;
-        
-        
         walkArray[0] = new GreenfootImage("p1.png");
         walkArray[1] = new GreenfootImage("p1_walk01.png");
         walkArray[2] = new GreenfootImage("p1_walk02.png");
@@ -92,11 +88,7 @@ public class Hero extends Mover {
 
     @Override
     public void act() {    
-       int newColom = getX() / 70;
-       int newRow = getY() / 70;
        
-       MouseInfo mouse = Greenfoot.getMouseInfo();
-
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -112,20 +104,11 @@ public class Hero extends Mover {
         getPowerup();
         setCheckpoints();
         Doors();
-        if(mouse != null) {
-                   int mouseColom = mouse.getX() / 70;
-        getWorld().showText("Mouse: " + mouseColom, 500, 60);
-    }
-        getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
+        getWorld().showText(getX() + ", " + getY(), 500, 30);     
     }
 
+<<<<<<< HEAD
     public void handleMovement() {
-        if(Greenfoot.isKeyDown("k")) {
-            tileEngine.removeTileAt(33, 20);
-        }
-        if(Greenfoot.isKeyDown("h")) {
-            tileEngine.addTileAt(new Springboards("springboardDown.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT),33, 20);
-        }
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
         }
@@ -133,7 +116,12 @@ public class Hero extends Mover {
             setImage(walkArray[13]);
         }
         if (Greenfoot.isKeyDown("space")) {
+            velocityY = -10;
+=======
+    public void handleInput() {
+        if (Greenfoot.isKeyDown("w")) {
             velocityY = -20;
+>>>>>>> 4372fff5ea53a9c16ee13c8083969eac7aeee2f9
         }
         if (Greenfoot.isKeyDown("a")) {
             if(onGround()) {
@@ -158,15 +146,12 @@ public class Hero extends Mover {
             }
         }
     }
-        
     
     
     public void Doors() {
-        //int colom = BasicTile.getColom();
-        Doors door = (Doors)getOneIntersectingObject(Doors.class);
         if(isTouching(Doors.class)) {
             if(Greenfoot.isKeyDown("s")) {
-                if(door.getColom() == 33 && door.getRow() == 44){
+                if(getX() >= 2300 && getX() <= 2370 && getY() >= 3100 && getY() <= 3150) {
                     setLocation(2630, 3116); 
                 }
             }

@@ -15,6 +15,7 @@ public class Keys extends Tile
         int begin = 3;
         int end = image.indexOf(".");
         color = image.substring(begin,end);
+        
     }
 
     /**

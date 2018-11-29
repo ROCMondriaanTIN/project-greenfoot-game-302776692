@@ -15,7 +15,18 @@ public class Tile extends BasicTile {
      * @param heigth Height of the tile
      */
     public Tile(String image, int width, int heigth) {
+<<<<<<< HEAD
+        super();
+        setImage(image);
+        getImage().scale(width, heigth);
+        if (CollisionEngine.DEBUG) {
+            getImage().drawString("ID: " + id, 10, 10);
+        }
+        _id = id;
+        id++;
+=======
         super(image, width, heigth);
+>>>>>>> 4372fff5ea53a9c16ee13c8083969eac7aeee2f9
     }
 
     /**
@@ -29,5 +40,8 @@ public class Tile extends BasicTile {
      */
     public Tile(String image, int width, int heigth, TileType type) {
         super(image, width, heigth, type);
+    }
+    public boolean getIsSolid() {
+        return isSolid;
     }
 }

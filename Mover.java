@@ -43,7 +43,7 @@ public class Mover extends Actor {
     public boolean onGround() {
         Tile tile = (Tile)getOneObjectAtOffset(0, getImage().getHeight() / 2, Tile.class);
         if(tile != null) {
-            if(tile.getIsSolid()) {
+            if(tile.isSolid) {
                 return true;
             } else {
                 return false;

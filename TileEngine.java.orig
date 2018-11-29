@@ -98,8 +98,12 @@ public class TileEngine {
         for (int y = 0; y < MAP_HEIGHT; y++) {
             for (int x = 0; x < MAP_WIDTH; x++) {
                 // Nummer ophalen in de int array
-                mapID++;
+<<<<<<< HEAD
                 int mapIcon = this.map[y][x]; 
+=======
+                mapID++;
+                int mapIcon = this.map[y][x];
+>>>>>>> 4372fff5ea53a9c16ee13c8083969eac7aeee2f9
                 if (mapIcon == -1) {
                     continue;
                 }
@@ -187,8 +191,6 @@ public class TileEngine {
         }
         return false;
     }
-    
-    
 
     /**
      * Removes tile at the given x and y position
