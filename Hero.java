@@ -94,8 +94,7 @@ public class Hero extends Mover {
     public void act() {    
        int newColom = getX() / 70;
        int newRow = getY() / 70;
-       
-       MouseInfo mouse = Greenfoot.getMouseInfo();
+
 
         velocityX *= drag;
         velocityY += acc;
@@ -112,10 +111,6 @@ public class Hero extends Mover {
         getPowerup();
         setCheckpoints();
         Doors();
-        if(mouse != null) {
-                   int mouseColom = mouse.getX() / 70;
-        getWorld().showText("Mouse: " + mouseColom, 500, 60);
-    }
         getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
     }
 
@@ -152,9 +147,9 @@ public class Hero extends Mover {
         }
         if (Greenfoot.isKeyDown("w") && onGround()) {
             if(isTouching(Springboards.class)) { 
-                velocityY = -10 + Springboards.springboardVelocity + bonusVelocityY;
+                velocityY = -10 + Springboards.springboardVelocity + (bonusVelocityY * jumpPowerups);
             } else {
-                velocityY = -10 + bonusVelocityY;
+                velocityY = -10 + (bonusVelocityY * jumpPowerups);
             }
         }
     }
@@ -168,6 +163,12 @@ public class Hero extends Mover {
             if(Greenfoot.isKeyDown("s")) {
                 if(door.getColom() == 33 && door.getRow() == 44){
                     setLocation(2630, 3116); 
+                }
+                if(door.getColom() == 60 && door.getRow() == 25){
+                    setLocation(3300, 3186); 
+                }
+                if(door.getColom() == 47 && door.getRow() == 45) {
+                    setLocation(4400, 1750);
                 }
             }
         }

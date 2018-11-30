@@ -28,7 +28,7 @@ public class Buttons extends Tile
     public void isTouchingButton() {
         if(isTouching(Hero.class)) {
             if(getColom() == 33 && getRow() == 20){               
-                Hero.tileEngine.removeTileAt(21, 42); 
+                Hero.tileEngine.removeTileAt(19, 29); 
             } else if(getColom() == 33 && getRow() == 31) {
                 Hero.tileEngine.removeTileAt(21, 42); 
             }

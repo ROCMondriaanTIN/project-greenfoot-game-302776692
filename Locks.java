@@ -18,10 +18,15 @@ public class Locks extends Tile
     public void act() 
     {
         if(isTouching(Hero.class)){
+            if(getColom() == 32 && getRow() == 44) {
             if(Hero.redKeyCheck == true) {
-                setImage("invisible.png");
-                this.isSolid = false;                
+                Hero.tileEngine.removeTileAt(32, 44);               
             }
+        } else if(getColom() == 46 && getRow() == 44) {
+            if(Hero.blueKeyCheck == true) {
+                Hero.tileEngine.addTileAt(32, 44); 
+            }
+        }
         }
     }    
 }
