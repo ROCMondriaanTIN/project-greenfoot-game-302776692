@@ -51,6 +51,11 @@ public class BasicTile extends Actor {
         this(image, width, heigth);
         this.type = type;
     }
+    
+    
+  
+    
+   
 
     @Override
     public String toString() {

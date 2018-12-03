@@ -112,6 +112,7 @@ public class Hero extends Mover {
         setCheckpoints();
         Doors();
         getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
+        getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
     }
 
     public void handleMovement() {
@@ -153,22 +154,20 @@ public class Hero extends Mover {
             }
         }
     }
-        
-    
-    
+            
     public void Doors() {
         //int colom = BasicTile.getColom();
         Doors door = (Doors)getOneIntersectingObject(Doors.class);
         if(isTouching(Doors.class)) {
             if(Greenfoot.isKeyDown("s")) {
-                if(door.getColom() == 33 && door.getRow() == 44){
+                /*if(door.getColom() == 33 && door.getRow() == 44){
                     setLocation(2630, 3116); 
+                }*/
+                if(getX() >= 4200 && getX() <= 4300 && getY() >= 1700 && getY() <= 1800){
+                    setLocation(3323, 3186); 
                 }
-                if(door.getColom() == 60 && door.getRow() == 25){
-                    setLocation(3300, 3186); 
-                }
-                if(door.getColom() == 47 && door.getRow() == 45) {
-                    setLocation(4400, 1750);
+                else if(getX() >= 3200 && getX() <= 3400 && getY() >= 3100 && getY() <= 3200){
+                    setLocation(2715, 3115);
                 }
             }
         }

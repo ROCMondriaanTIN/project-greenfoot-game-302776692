@@ -24,7 +24,9 @@ public class Locks extends Tile
             }
         } else if(getColom() == 46 && getRow() == 44) {
             if(Hero.blueKeyCheck == true) {
-                Hero.tileEngine.addTileAt(32, 44); 
+                Hero.tileEngine.removeTileAt(46, 44); 
+                Hero.tileEngine.addTileAt(new Doors("door_openMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT), 60, 17); 
+                Hero.tileEngine.addTileAt(new Doors("door_openTop.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT), 60, 16); 
             }
         }
         }
