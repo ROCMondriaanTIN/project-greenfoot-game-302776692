@@ -12,7 +12,6 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    
 
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
@@ -25,20 +24,18 @@ public class Hero extends Mover {
     public static boolean yellowKeyCheck;
     public static boolean greenKeyCheck;
 
-
     //Deze 3 zijn voor de powerups en score
-    public static double bonusVelocityY;
-    public static double bonusVelocityX;
+    public static double bonusVelocityY = 2;
+    public static double bonusVelocityX = 2;
     public static int jumpPowerups = 0;
     public static int speedPowerup = 0;
     public static int healthPowerup = 0;
     public static int score;
-    
+
     //Deze 3 zijn voor de health
     public boolean isHit;    
     private int hitTeller = 0;
     public static int totalHealth = 3 + healthPowerup;
-     
 
     //Deze zijn voor de interface
     private Health health1;
@@ -49,15 +46,14 @@ public class Hero extends Mover {
     private Hud yellowKeyHud;
     private Hud blueKeyHud;
     public static TileEngine tileEngine;
-
-    
+    private CollisionEngine collisionEngine;
 
     //Arrays
     GreenfootImage[] walkArray = new GreenfootImage[14];
     ArrayList <String> keyColor = new ArrayList<String>();
     ArrayList <String> powerupColor = new ArrayList<String>();
 
-    public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3, TileEngine tileEngine) {
+    public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3, TileEngine tileEngine, CollisionEngine collisionEngine) {
         super();        
         gravity = 9.8;
         acc = 0.3;
@@ -70,8 +66,8 @@ public class Hero extends Mover {
         this.health2 = health2;
         this.health3 = health3;      
         this.tileEngine = tileEngine;
-        
-        
+        this.collisionEngine = collisionEngine;
+
         walkArray[0] = new GreenfootImage("p1.png");
         walkArray[1] = new GreenfootImage("p1_walk01.png");
         walkArray[2] = new GreenfootImage("p1_walk02.png");
@@ -92,15 +88,16 @@ public class Hero extends Mover {
 
     @Override
     public void act() {    
-       int newColom = getX() / 70;
-       int newRow = getY() / 70;
-
+        int newColom = getX() / 70;
+        int newRow = getY() / 70;
+        List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
 
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
             velocityY = gravity;
         }   
+        
         handleMovement();
         checkKey();
         Health();
@@ -111,17 +108,12 @@ public class Hero extends Mover {
         getPowerup();
         setCheckpoints();
         Doors();
+        LocksWorld4();
         getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
         getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
     }
 
     public void handleMovement() {
-        if(Greenfoot.isKeyDown("k")) {
-            tileEngine.removeTileAt(33, 20);
-        }
-        if(Greenfoot.isKeyDown("h")) {
-            tileEngine.addTileAt(new Springboards("springboardDown.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT),33, 20);
-        }
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
         }
@@ -137,31 +129,36 @@ public class Hero extends Mover {
             }
             mirrorHero();
             facingLeft = true;
-            velocityX = -2 - bonusVelocityX;
+            velocityX = -2 - (bonusVelocityX * speedPowerup);
         } else if (Greenfoot.isKeyDown("d")) {
             if(onGround()) {
                 walkAnimatie();
             }
             mirrorHero();
             facingLeft = false;
-            velocityX = 2 + bonusVelocityX;
+            velocityX = 2 + (bonusVelocityX * speedPowerup);
         }
-        if (Greenfoot.isKeyDown("w") && onGround()) {
-            if(isTouching(Springboards.class)) { 
-                velocityY = -10 + Springboards.springboardVelocity + (bonusVelocityY * jumpPowerups);
-            } else {
-                velocityY = -10 + (bonusVelocityY * jumpPowerups);
+        if (Greenfoot.isKeyDown("w")) {
+            if(onGround()) {
+                if(isTouching(Springboards.class)) { 
+                    velocityY = -10 + Springboards.springboardVelocity - (bonusVelocityY * jumpPowerups);
+                } else {
+                    velocityY = -10 - (bonusVelocityY * jumpPowerups);
+                }
+            }
+            if(isTouching(ClimbObject.class)) {
+                velocityY = -5;
             }
         }
     }
-            
+
     public void Doors() {
         //int colom = BasicTile.getColom();
         Doors door = (Doors)getOneIntersectingObject(Doors.class);
         if(isTouching(Doors.class)) {
             if(Greenfoot.isKeyDown("s")) {
                 /*if(door.getColom() == 33 && door.getRow() == 44){
-                    setLocation(2630, 3116); 
+                setLocation(2630, 3116); 
                 }*/
                 if(getX() >= 4200 && getX() <= 4300 && getY() >= 1700 && getY() <= 1800){
                     setLocation(3323, 3186); 
@@ -169,6 +166,9 @@ public class Hero extends Mover {
                 else if(getX() >= 3200 && getX() <= 3400 && getY() >= 3100 && getY() <= 3200){
                     setLocation(2715, 3115);
                 }
+                if(getWorld() instanceof TutorialWorld) {
+                    setLocation(2900, 3327); 
+                } 
             }
         }
     }
@@ -194,7 +194,7 @@ public class Hero extends Mover {
             setImage("invisible.png");
             Greenfoot.stop();          
         }
-        if(isTouching(DangerousTiles.class)){
+        if(isTouching(DangerousTiles.class) || isTouching(Fireballs.class)){
             if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
                 setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
             } else {
@@ -279,7 +279,6 @@ public class Hero extends Mover {
         if(!isEmpty) {
             for(int i = 0; i < powerupColor.size(); i++) {
                 if(powerupColor.get(i).equals("Blue")) { 
-                    bonusVelocityY = -2;
                     powerupColor.remove(i);
                     jumpPowerups = jumpPowerups + 1;
                     continue;
@@ -290,12 +289,37 @@ public class Hero extends Mover {
                     continue;
                 }
                 if(powerupColor.get(i).equals("Yellow")) { 
-                    bonusVelocityX = 1;
                     powerupColor.remove(i);
                     continue;
                 }
             }
         }
+    }
+
+    public void LocksWorld4() {
+        List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+        for(Tile tile : tiles) {
+            if(tile != null) {
+                if(isTouching(Locks.class)) {
+                    if(this.getWorld().getClass() == Level4.class) {
+                    if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                            tileEngine.removeTileAt(1, 58);
+                            tileEngine.removeTileAt(28, 33);
+                        } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
+                            tileEngine.removeTileAt(2, 58);
+                            tileEngine.removeTileAt(28, 35);
+                        } else if(tile.type == TileType.RED && redKeyCheck == true){
+                            tileEngine.removeTileAt(3, 58);
+                            tileEngine.removeTileAt(28, 34);
+                        } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
+                            tileEngine.removeTileAt(4, 58);
+                            tileEngine.removeTileAt(28, 36);
+                        }                      
+                    }
+                }
+            }
+        }
+
     }
 
     public void checkKey() {
@@ -304,6 +328,7 @@ public class Hero extends Mover {
             if(key != null) {
                 if(!keyColor.contains(key.getKeyColor())) {
                     keyColor.add(key.getKeyColor());
+                    removeTouching(Keys.class); 
                 }
             }
         }        
@@ -328,7 +353,7 @@ public class Hero extends Mover {
                     yellowKeyCheck = true;
                     yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow.png"), 900, 30);
                     continue;
-                }
+                }                
             }
         }
     }

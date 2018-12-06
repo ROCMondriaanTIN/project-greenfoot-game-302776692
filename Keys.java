@@ -24,9 +24,7 @@ public class Keys extends Tile
      */
     public void act() 
     {
-        if(isTouching(Hero.class)) {
-            getWorld().removeObject(this);  
-        }
+        
     }
 
     public String getKeyColor() {

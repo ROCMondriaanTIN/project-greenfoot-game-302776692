@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  *
  * @author R. Springer
  */
-public class World2 extends World {
+public class Level1 extends World {
 
     private CollisionEngine ce;
 
@@ -13,7 +13,7 @@ public class World2 extends World {
      * Constructor for objects of class World2.
      *
      */
-    public World2() {
+    public Level1() {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1000, 800, 1, false);
         this.setBackground("bg4.jpg");
@@ -85,7 +85,7 @@ public class World2 extends World {
   
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
-        Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te);
+        Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te, ce);
         Enemy enemy1 = new Enemy();
         Enemy enemy2 = new Enemy();
 
@@ -95,7 +95,7 @@ public class World2 extends World {
         // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
         addObject(camera, 1200, 2700);
 
-        addObject(hero, 3250, 3185);
+        addObject(hero, 2250, 3185);
         addObject(enemy1, 1600, 2088);
         addObject(enemy2, 2200, 2228);
 

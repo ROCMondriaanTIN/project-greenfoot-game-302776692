@@ -84,7 +84,7 @@ public class MyWorld extends World {
         
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
-        Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te);
+        Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te, ce);
         Enemy enemy1 = new Enemy();
         Enemy enemy2 = new Enemy();
         

@@ -20,8 +20,10 @@ public class Springboards extends Tile
     {
         if(isTouching(Hero.class)){
             setImage("springboardDown.png");
+            //System.out.println("is touching");
         } else {
             setImage("springboardUp.png");
+            //System.out.println("is not touching");
         }
     }    
 }

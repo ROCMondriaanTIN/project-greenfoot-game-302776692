@@ -27,11 +27,16 @@ public class Buttons extends Tile
 
     public void isTouchingButton() {
         if(isTouching(Hero.class)) {
+            if(getWorld() instanceof Level1) {
             if(getColom() == 33 && getRow() == 20){               
                 Hero.tileEngine.removeTileAt(19, 29); 
             } else if(getColom() == 33 && getRow() == 31) {
                 Hero.tileEngine.removeTileAt(21, 42); 
             }
+        } 
+        if(getWorld() instanceof TutorialWorld) {
+            Hero.tileEngine.removeTileAt(26, 45); 
+        }
             setImage("buttonRed_pressed.png");
         } 
     }
