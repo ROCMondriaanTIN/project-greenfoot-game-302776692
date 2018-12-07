@@ -51,6 +51,36 @@ public class Tutorial extends Hud
             GreenfootImage image = new GreenfootImage("Druk op W om op ladders te klimmen.", 30, Color.RED, null);
             setImage(image);
         }
+        
+        //2e verdieping
+        if(hero.get(0).worldX > 3300 && hero.get(0).worldX < 3500 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Verzamel zoveel mogelijk goude munten voor meer punten.", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 2600 && hero.get(0).worldX < 3000 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Rode vlaggen zijn checkpoints, raak ze aan om je voortgang op te slaan.", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 2400 && hero.get(0).worldX < 2700 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Water en lava zijn ook gevaarlijk, zorg ervoor dat je er niet invalt", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 1900 && hero.get(0).worldX < 2100 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Gele gems zorgen ervoor dat je sneller rent.", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 1500 && hero.get(0).worldX < 1700 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Pas op voor de enemies, raak ze niet aan!", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 1200 && hero.get(0).worldX < 1400 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("De rode gems geven je 1 leven extra.", 30, Color.RED, null);
+            setImage(image);
+        }
+        if(hero.get(0).worldX > 800 && hero.get(0).worldX < 1000 && hero.get(0).worldY < 3000) {
+            GreenfootImage image = new GreenfootImage("Spring op de blauwe button om de tutorial te beëindigen.", 30, Color.RED, null);
+            setImage(image);
+        }
     }
   
 }

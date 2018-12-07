@@ -161,8 +161,11 @@ public class TileFactory {
             case 174:
             tile = new DangerousTiles("bomb.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
+            case 177:
+            tile = new Buttons("buttonBlue.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.BLUE);
+            break;    
             case 181:
-            tile = new Buttons("buttonRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile = new Buttons("buttonRed.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.RED);
             break;    
             case 186:
             tile = new Tile("chain.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
@@ -234,6 +237,21 @@ public class TileFactory {
             break;
             case 273:
             tile = new Tile("Enemies/snailWalk1.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 275:
+            tile = new MapSelector("Levels/level_1.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL1);
+            break;
+            case 276:
+            tile = new MapSelector("Levels/level_2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL2);
+            break;
+            case 277:
+            tile = new MapSelector("Levels/level_3.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL3);
+            break;
+            case 278:
+            tile = new MapSelector("Levels/level_4.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL4);
+            break;
+            case 279:
+            tile = new MapSelector("Levels/level_5.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL5);
             break;
             default:
             tile = new Tile("grassMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);

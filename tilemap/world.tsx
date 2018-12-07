@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.0" name="world" tilewidth="129" tileheight="146" tilecount="274" columns="0">
+<tileset version="1.2" tiledversion="1.2.0" name="world" tilewidth="129" tileheight="146" tilecount="279" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="70" height="70" source="../images/box.png"/>
@@ -800,7 +800,7 @@
   <image width="70" height="70" source="../images/castleCenter.png"/>
  </tile>
  <tile id="267">
-  <image width="51" height="51" source="../images/Enemies/blockerMad.png"/>
+  <image width="30" height="30" source="../images/Enemies/blockerMad.png"/>
  </tile>
  <tile id="268">
   <image width="72" height="36" source="../images/Enemies/flyFly1.png"/>
@@ -822,5 +822,20 @@
  </tile>
  <tile id="274">
   <image width="57" height="31" source="../images/Enemies/snailWalk2.png"/>
+ </tile>
+ <tile id="275">
+  <image width="50" height="50" source="../images/Levels/level_1.png"/>
+ </tile>
+ <tile id="276">
+  <image width="50" height="50" source="../images/Levels/level_2.png"/>
+ </tile>
+ <tile id="277">
+  <image width="50" height="50" source="../images/Levels/level_3.png"/>
+ </tile>
+ <tile id="278">
+  <image width="50" height="50" source="../images/Levels/level_4.png"/>
+ </tile>
+ <tile id="279">
+  <image width="50" height="50" source="../images/Levels/level_5.png"/>
  </tile>
 </tileset>

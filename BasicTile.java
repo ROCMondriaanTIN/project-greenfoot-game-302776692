@@ -17,6 +17,8 @@ public class BasicTile extends Actor {
     protected int mapID = -1;
     protected int colom = -1;
     protected int row = -1;
+    public int x;
+    public int y;
     
 
     /**
@@ -105,5 +107,10 @@ public class BasicTile extends Actor {
         this.row = row;
     }
     
-    
+    public int x() {
+        return x;
+    }
+    public int y() {
+        return y;
+    }
 }

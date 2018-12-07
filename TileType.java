@@ -17,5 +17,10 @@ public enum TileType {
     RED,
     YELLOW,
     GREEN,
+    LEVEL1,
+    LEVEL2,
+    LEVEL3,
+    LEVEL4,
+    LEVEL5,
     // Add your own tile types here
 }

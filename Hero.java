@@ -12,11 +12,13 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
+    public static int levelsCompleted;
 
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
     private boolean mirror;
     private int teller = 0;
+    public static boolean movementEnabled = true;
 
     //Deze 4 zijn voor de key interface en de locks
     public static boolean redKeyCheck;
@@ -90,14 +92,13 @@ public class Hero extends Mover {
     public void act() {    
         int newColom = getX() / 70;
         int newRow = getY() / 70;
-        List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
 
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
             velocityY = gravity;
         }   
-        
+
         handleMovement();
         checkKey();
         Health();
@@ -108,278 +109,308 @@ public class Hero extends Mover {
         getPowerup();
         setCheckpoints();
         Doors();
+        LocksTutorial();
         LocksWorld4();
-        getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
-        getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
-    }
-
-    public void handleMovement() {
-        if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
-            setImage("p1_front.png");
-        }
-        if(!onGround()) {
-            setImage(walkArray[13]);
-        }
-        if (Greenfoot.isKeyDown("space")) {
-            velocityY = -20;
-        }
-        if (Greenfoot.isKeyDown("a")) {
-            if(onGround()) {
-                walkAnimatie();
-            }
-            mirrorHero();
-            facingLeft = true;
-            velocityX = -2 - (bonusVelocityX * speedPowerup);
-        } else if (Greenfoot.isKeyDown("d")) {
-            if(onGround()) {
-                walkAnimatie();
-            }
-            mirrorHero();
-            facingLeft = false;
-            velocityX = 2 + (bonusVelocityX * speedPowerup);
-        }
-        if (Greenfoot.isKeyDown("w")) {
-            if(onGround()) {
-                if(isTouching(Springboards.class)) { 
-                    velocityY = -10 + Springboards.springboardVelocity - (bonusVelocityY * jumpPowerups);
-                } else {
-                    velocityY = -10 - (bonusVelocityY * jumpPowerups);
-                }
-            }
-            if(isTouching(ClimbObject.class)) {
-                velocityY = -5;
-            }
-        }
-    }
-
-    public void Doors() {
-        //int colom = BasicTile.getColom();
-        Doors door = (Doors)getOneIntersectingObject(Doors.class);
-        if(isTouching(Doors.class)) {
-            if(Greenfoot.isKeyDown("s")) {
-                /*if(door.getColom() == 33 && door.getRow() == 44){
-                setLocation(2630, 3116); 
-                }*/
-                if(getX() >= 4200 && getX() <= 4300 && getY() >= 1700 && getY() <= 1800){
-                    setLocation(3323, 3186); 
-                }
-                else if(getX() >= 3200 && getX() <= 3400 && getY() >= 3100 && getY() <= 3200){
-                    setLocation(2715, 3115);
-                }
-                if(getWorld() instanceof TutorialWorld) {
-                    setLocation(2900, 3327); 
-                } 
-            }
-        }
-    }
-
-    public void Health() {
-        if(totalHealth > 3) {            
-            health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
-            health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
-            health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
-            getWorld().showText(" + " + healthPowerup, 215, 30);
-        } else if(totalHealth == 3) {
-            health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
-            health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
-            health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
-            getWorld().showText("", 215, 30);
-        } else if(totalHealth == 2) {
-            health3.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 170, 30);
-        } else if(totalHealth == 1) {
-            health2.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 110, 30);
-        } else if(totalHealth <= 0) {
-            health1.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 50, 30);
-            getWorld().addObject(new GameOver(), getWorld().getWidth()/2, getWorld().getHeight()/2);
-            setImage("invisible.png");
-            Greenfoot.stop();          
-        }
-        if(isTouching(DangerousTiles.class) || isTouching(Fireballs.class)){
-            if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
-                setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
-            } else {
-                setLocation(1120, 2695);
-            }
-            totalHealth = totalHealth - 1;            
-        }
-        if(isTouching(Enemy.class)) {
-            if(isHit == false) {
-                if(Checkpoints.checkpointX > 1 && Checkpoints.checkpointY > 1) {
-                    isHit = true;
-                    totalHealth = totalHealth - 1;
-                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY); 
-                } else {
-                    isHit = true;
-                    setLocation(1120, 2695);
-                    totalHealth = totalHealth - 1;
-                } 
-            } 
-        }
-    }
-
-    public void isHit() {       
-        if(isHit == true) {
-            if(hitTeller == 10) {
-                isHit = false;
-                hitTeller = 0;                
-            }
-            hitTeller++;
-        }       
-    }
-
-    public void walkAnimatie() {
-        setImage(walkArray[teller]);
-        teller++;
-        if(teller >= 13){
-            teller = 0;
-        }  
-    }
-
-    public int getWidth() {
-        return getImage().getWidth();
-    }
-
-    public int getHeight() {
-        return getImage().getHeight();
-    }
-
-    public void mirrorImage() {
-        for(int i = 0; i < walkArray.length; i++){
-            walkArray[i].mirrorHorizontally();
-        }
-    }
-
-    public void mirrorHero() {
-        if(facingLeft == false && mirror == true){
-            mirrorImage();
-            mirror = false;
-        }
-        if(facingLeft == true && mirror == false){
-            mirrorImage();
-            mirror = true;
-        }
-    }
-
-    public void Score() {
-        getWorld().showText("Score: " + score, 300, 30);
-        if(isTouching(Keys.class)) {
-            score = score + 50;
-        }
-    }
-
-    public void getPowerup() {
-        boolean isEmpty = powerupColor.isEmpty();
-        for(Powerups powerup : getIntersectingObjects(Powerups.class)) {
-            if(powerup != null) {
-                if(!powerupColor.contains(powerup.getPowerupColor())) {
-                    powerupColor.add(powerup.getPowerupColor());
-                }
-            }
-        }
-        if(!isEmpty) {
-            for(int i = 0; i < powerupColor.size(); i++) {
-                if(powerupColor.get(i).equals("Blue")) { 
-                    powerupColor.remove(i);
-                    jumpPowerups = jumpPowerups + 1;
-                    continue;
-                }
-                if(powerupColor.get(i).equals("Red")) { 
-                    healthPowerup += 1;
-                    powerupColor.remove(i);
-                    continue;
-                }
-                if(powerupColor.get(i).equals("Yellow")) { 
-                    powerupColor.remove(i);
-                    continue;
-                }
-            }
-        }
-    }
-
-    public void LocksWorld4() {
         List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
         for(Tile tile : tiles) {
-            if(tile != null) {
-                if(isTouching(Locks.class)) {
-                    if(this.getWorld().getClass() == Level4.class) {
-                    if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
-                            tileEngine.removeTileAt(1, 58);
-                            tileEngine.removeTileAt(28, 33);
-                        } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
-                            tileEngine.removeTileAt(2, 58);
-                            tileEngine.removeTileAt(28, 35);
-                        } else if(tile.type == TileType.RED && redKeyCheck == true){
-                            tileEngine.removeTileAt(3, 58);
-                            tileEngine.removeTileAt(28, 34);
-                        } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
-                            tileEngine.removeTileAt(4, 58);
-                            tileEngine.removeTileAt(28, 36);
-                        }                      
+            if(Greenfoot.mouseClicked(this)) {
+            if(tile != null) {                
+                if(tile.type == TileType.LEVEL1) { 
+                    Greenfoot.setWorld(new TutorialWorld());
+                }
+
+            }
+        }
+    }
+
+            getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
+            getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
+        }
+
+        public void handleMovement() {
+            if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
+                setImage("p1_front.png");
+            }
+            if(!onGround()) {
+                setImage(walkArray[13]);
+            }
+            if (Greenfoot.isKeyDown("space")) {
+                velocityY = -20;
+            }
+            if (Greenfoot.isKeyDown("a") && movementEnabled == true) {
+                if(onGround()) {
+                    walkAnimatie();
+                }
+                mirrorHero();
+                facingLeft = true;
+                velocityX = -2 - (bonusVelocityX * speedPowerup);
+            } else if (Greenfoot.isKeyDown("d") && movementEnabled == true) {
+                if(onGround()) {
+                    walkAnimatie();
+                }
+                mirrorHero();
+                facingLeft = false;
+                velocityX = 2 + (bonusVelocityX * speedPowerup);
+            }
+            if (Greenfoot.isKeyDown("w") && movementEnabled == true) {
+                if(onGround()) {
+                    if(isTouching(Springboards.class)) { 
+                        velocityY = -10 + Springboards.springboardVelocity - (bonusVelocityY * jumpPowerups);
+                    } else {
+                        velocityY = -10 - (bonusVelocityY * jumpPowerups);
+                    }
+                }
+                if(isTouching(ClimbObject.class)) {
+                    velocityY = -5;
+                }
+            }
+        }
+
+        public void Doors() {
+            //int colom = BasicTile.getColom();
+            Doors door = (Doors)getOneIntersectingObject(Doors.class);
+            if(isTouching(Doors.class)) {
+                if(Greenfoot.isKeyDown("s")) {
+                    /*if(door.getColom() == 33 && door.getRow() == 44){
+                    setLocation(2630, 3116); 
+                    }*/
+                    if(getX() >= 4200 && getX() <= 4300 && getY() >= 1700 && getY() <= 1800){
+                        setLocation(3323, 3186); 
+                    }
+                    else if(getX() >= 3200 && getX() <= 3400 && getY() >= 3100 && getY() <= 3200){
+                        setLocation(2715, 3115);
+                    }
+                    if(getWorld() instanceof TutorialWorld) {
+                        setLocation(2900, 3327); 
+                    } 
+                }
+            }
+        }
+
+        public void Health() {
+            if(totalHealth > 3) {            
+                health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
+                health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
+                health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
+                getWorld().showText(" + " + healthPowerup, 215, 30);
+            } else if(totalHealth == 3) {
+                health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
+                health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
+                health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
+                getWorld().showText("", 215, 30);
+            } else if(totalHealth == 2) {
+                health3.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 170, 30);
+            } else if(totalHealth == 1) {
+                health2.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 110, 30);
+            } else if(totalHealth <= 0) {
+                health1.checkHealth(new GreenfootImage("hud_heartEmpty.png"), 50, 30);
+                getWorld().addObject(new GameOver(), getWorld().getWidth()/2, getWorld().getHeight()/2);
+                setImage("invisible.png");
+                Greenfoot.stop();          
+            }
+            if(isTouching(DangerousTiles.class) || isTouching(Fireballs.class)){
+                if(Checkpoints.checkpointX > 0 && Checkpoints.checkpointY > 0) {
+                    setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY);
+                } else {
+                    setLocation(1120, 2695);
+                }
+                totalHealth = totalHealth - 1;            
+            }
+            if(isTouching(Enemy.class)) {
+                if(isHit == false) {
+                    if(Checkpoints.checkpointX > 1 && Checkpoints.checkpointY > 1) {
+                        isHit = true;
+                        totalHealth = totalHealth - 1;
+                        setLocation(Checkpoints.checkpointX, Checkpoints.checkpointY); 
+                    } else {
+                        isHit = true;
+                        setLocation(1120, 2695);
+                        totalHealth = totalHealth - 1;
+                    } 
+                } 
+            }
+        }
+
+        public void isHit() {       
+            if(isHit == true) {
+                if(hitTeller == 10) {
+                    isHit = false;
+                    hitTeller = 0;                
+                }
+                hitTeller++;
+            }       
+        }
+
+        public void walkAnimatie() {
+            setImage(walkArray[teller]);
+            teller++;
+            if(teller >= 13){
+                teller = 0;
+            }  
+        }
+
+        public int getWidth() {
+            return getImage().getWidth();
+        }
+
+        public int getHeight() {
+            return getImage().getHeight();
+        }
+
+        public void mirrorImage() {
+            for(int i = 0; i < walkArray.length; i++){
+                walkArray[i].mirrorHorizontally();
+            }
+        }
+
+        public void mirrorHero() {
+            if(facingLeft == false && mirror == true){
+                mirrorImage();
+                mirror = false;
+            }
+            if(facingLeft == true && mirror == false){
+                mirrorImage();
+                mirror = true;
+            }
+        }
+
+        public void Score() {
+            getWorld().showText("Score: " + score, 300, 30);
+            if(isTouching(Keys.class)) {
+                score = score + 50;
+            }
+        }
+
+        public void getPowerup() {
+            boolean isEmpty = powerupColor.isEmpty();
+            for(Powerups powerup : getIntersectingObjects(Powerups.class)) {
+                if(powerup != null) {
+                    if(!powerupColor.contains(powerup.getPowerupColor())) {
+                        powerupColor.add(powerup.getPowerupColor());
+                    }
+                }
+            }
+            if(!isEmpty) {
+                for(int i = 0; i < powerupColor.size(); i++) {
+                    if(powerupColor.get(i).equals("Blue")) { 
+                        powerupColor.remove(i);
+                        jumpPowerups = jumpPowerups + 1;
+                        continue;
+                    }
+                    if(powerupColor.get(i).equals("Red")) { 
+                        healthPowerup += 1;
+                        powerupColor.remove(i);
+                        continue;
+                    }
+                    if(powerupColor.get(i).equals("Yellow")) { 
+                        speedPowerup += 1;
+                        powerupColor.remove(i);
+                        continue;
                     }
                 }
             }
         }
 
-    }
-
-    public void checkKey() {
-        boolean empty = keyColor.isEmpty();
-        for(Keys key : getIntersectingObjects(Keys.class)) {
-            if(key != null) {
-                if(!keyColor.contains(key.getKeyColor())) {
-                    keyColor.add(key.getKeyColor());
-                    removeTouching(Keys.class); 
+        public void LocksTutorial() {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(this.getWorld().getClass() == TutorialWorld.class) {
+                            if(tile.type == TileType.RED && redKeyCheck == true) {                       
+                                tileEngine.removeTileAt(46, 46);
+                                tileEngine.removeTileAt(47, 47);
+                            }                    
+                        }
+                    }
                 }
             }
-        }        
-        if(!empty) {
-            for(int i = 0; i < keyColor.size(); i++) {
-                if(keyColor.get(i).equals("Red")){
-                    redKeyCheck = true;
-                    redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 800, 30);
-                    continue;
+        }
+
+        public void LocksWorld4() {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(this.getWorld().getClass() == Level4.class) {
+                            if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                                tileEngine.removeTileAt(1, 58);
+                                tileEngine.removeTileAt(28, 33);
+                            } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
+                                tileEngine.removeTileAt(2, 58);
+                                tileEngine.removeTileAt(28, 35);
+                            } else if(tile.type == TileType.RED && redKeyCheck == true){
+                                tileEngine.removeTileAt(3, 58);
+                                tileEngine.removeTileAt(28, 34);
+                            } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
+                                tileEngine.removeTileAt(4, 58);
+                                tileEngine.removeTileAt(28, 36);
+                            }                      
+                        }
+                    }
                 }
-                if(("Green").equals(keyColor.get(i))) {
-                    greenKeyCheck = true;
-                    greenKeyHud.addKey(new GreenfootImage("hud_keyGreen.png"), 850, 30);
-                    continue;
+            }
+
+        }
+
+        public void checkKey() {
+            boolean empty = keyColor.isEmpty();
+            for(Keys key : getIntersectingObjects(Keys.class)) {
+                if(key != null) {
+                    if(!keyColor.contains(key.getKeyColor())) {
+                        keyColor.add(key.getKeyColor());
+                        removeTouching(Keys.class); 
+                    }
                 }
-                if(("Blue").equals(keyColor.get(i))) {
-                    blueKeyCheck = true;
-                    blueKeyHud.addKey(new GreenfootImage("hud_keyBlue.png"), 950, 30);
-                    continue;
+            }        
+            if(!empty) {
+                for(int i = 0; i < keyColor.size(); i++) {
+                    if(keyColor.get(i).equals("Red")){
+                        redKeyCheck = true;
+                        redKeyHud.addKey(new GreenfootImage("hud_keyRed.png"), 800, 30);
+                        continue;
+                    }
+                    if(("Green").equals(keyColor.get(i))) {
+                        greenKeyCheck = true;
+                        greenKeyHud.addKey(new GreenfootImage("hud_keyGreen.png"), 850, 30);
+                        continue;
+                    }
+                    if(("Blue").equals(keyColor.get(i))) {
+                        blueKeyCheck = true;
+                        blueKeyHud.addKey(new GreenfootImage("hud_keyBlue.png"), 950, 30);
+                        continue;
+                    }
+                    if(("Yellow").equals(keyColor.get(i))) {
+                        yellowKeyCheck = true;
+                        yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow.png"), 900, 30);
+                        continue;
+                    }                
                 }
-                if(("Yellow").equals(keyColor.get(i))) {
-                    yellowKeyCheck = true;
-                    yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow.png"), 900, 30);
-                    continue;
-                }                
+            }
+        }
+
+        public void KeysInterface() {
+            if(redKeyCheck == false) {
+                redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
+            } 
+            if(greenKeyCheck == false) {
+                greenKeyHud.addKey(new GreenfootImage("hud_keyGreem_disabled.png"), 850, 30);
+            } 
+            if(yellowKeyCheck == false) {
+                yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow_disabled.png"), 900, 30);
+            } 
+            if(blueKeyCheck == false) {
+                blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
+            }         
+        }
+
+        public void setCheckpoints() {
+            for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
+                if (hero != null) {
+                    Checkpoints.checkpointX = getX();
+                    Checkpoints.checkpointY = getY();             
+                    break;
+                }
             }
         }
     }
-
-    public void KeysInterface() {
-        if(redKeyCheck == false) {
-            redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
-        } 
-        if(greenKeyCheck == false) {
-            greenKeyHud.addKey(new GreenfootImage("hud_keyGreem_disabled.png"), 850, 30);
-        } 
-        if(yellowKeyCheck == false) {
-            yellowKeyHud.addKey(new GreenfootImage("hud_keyYellow_disabled.png"), 900, 30);
-        } 
-        if(blueKeyCheck == false) {
-            blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
-        }         
-    }
-
-    public void setCheckpoints() {
-        for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
-            if (hero != null) {
-                Checkpoints.checkpointX = getX();
-                Checkpoints.checkpointY = getY();             
-                break;
-            }
-        }
-    }
-}
