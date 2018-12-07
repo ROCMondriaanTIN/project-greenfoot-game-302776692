@@ -253,6 +253,10 @@ public class TileFactory {
             case 279:
             tile = new MapSelector("Levels/level_5.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL5);
             break;
+            case 280:
+            tile = new Tile("invisible.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
             default:
             tile = new Tile("grassMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             tile.isSolid = true;

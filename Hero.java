@@ -13,6 +13,7 @@ public class Hero extends Mover {
     private final double acc;
     private final double drag;
     public static int levelsCompleted;
+    private boolean activated = false;
 
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
@@ -29,8 +30,8 @@ public class Hero extends Mover {
     //Deze 3 zijn voor de powerups en score
     public static double bonusVelocityY = 2;
     public static double bonusVelocityX = 2;
-    public static int jumpPowerups = 0;
-    public static int speedPowerup = 0;
+    public static double jumpPowerups = 0;
+    public static double speedPowerup = 0;
     public static int healthPowerup = 0;
     public static int score;
 
@@ -55,10 +56,19 @@ public class Hero extends Mover {
     ArrayList <String> keyColor = new ArrayList<String>();
     ArrayList <String> powerupColor = new ArrayList<String>();
 
+    public Hero(CollisionEngine collisionEngine) {
+        super();
+        gravity = 9.8;
+        acc = 0.3;
+        drag = 0.8;
+        this.collisionEngine = collisionEngine;
+        setImage("p1_stand.png");
+    }
+
     public Hero(Hud redKeyHud, Hud greenKeyHud, Hud yellowKeyHud, Hud blueKeyHud, Health health1, Health health2, Health health3, TileEngine tileEngine, CollisionEngine collisionEngine) {
         super();        
         gravity = 9.8;
-        acc = 0.3;
+        acc = 0.28;
         drag = 0.8;
         this.redKeyHud = redKeyHud;
         this.greenKeyHud = greenKeyHud;
@@ -111,64 +121,53 @@ public class Hero extends Mover {
         Doors();
         LocksTutorial();
         LocksWorld4();
-        List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
-        for(Tile tile : tiles) {
-            if(Greenfoot.mouseClicked(this)) {
-            if(tile != null) {                
-                if(tile.type == TileType.LEVEL1) { 
-                    Greenfoot.setWorld(new TutorialWorld());
-                }
+        levelSelect();
+        getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
+        getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
+    }
 
+    public void handleMovement() {
+        if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
+            setImage("p1_front.png");
+        }
+        if(!onGround()) {
+            setImage(walkArray[13]);
+        }
+        if (Greenfoot.isKeyDown("space")) {
+            velocityY = -20;
+        }
+        if (Greenfoot.isKeyDown("a") && movementEnabled == true) {
+            if(onGround()) {
+                walkAnimatie();
+            }
+            mirrorHero();
+            facingLeft = true;
+            velocityX = -2 - (bonusVelocityX * speedPowerup);
+        } else if (Greenfoot.isKeyDown("d") && movementEnabled == true) {
+            if(onGround()) {
+                walkAnimatie();
+            }
+            mirrorHero();
+            facingLeft = false;
+            velocityX = 2 + (bonusVelocityX * speedPowerup);
+        }
+        if (Greenfoot.isKeyDown("w") && movementEnabled == true) {
+            if(onGround()) {
+                if(isTouching(Springboards.class)) { 
+                    velocityY = -10 + Springboards.springboardVelocity - (bonusVelocityY * jumpPowerups);
+                } else {
+                    velocityY = -10 - (bonusVelocityY * jumpPowerups);
+                }
+            }
+            if(isTouching(ClimbObject.class)) {
+                velocityY = -5;
             }
         }
     }
 
-            getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
-            getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
-        }
-
-        public void handleMovement() {
-            if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
-                setImage("p1_front.png");
-            }
-            if(!onGround()) {
-                setImage(walkArray[13]);
-            }
-            if (Greenfoot.isKeyDown("space")) {
-                velocityY = -20;
-            }
-            if (Greenfoot.isKeyDown("a") && movementEnabled == true) {
-                if(onGround()) {
-                    walkAnimatie();
-                }
-                mirrorHero();
-                facingLeft = true;
-                velocityX = -2 - (bonusVelocityX * speedPowerup);
-            } else if (Greenfoot.isKeyDown("d") && movementEnabled == true) {
-                if(onGround()) {
-                    walkAnimatie();
-                }
-                mirrorHero();
-                facingLeft = false;
-                velocityX = 2 + (bonusVelocityX * speedPowerup);
-            }
-            if (Greenfoot.isKeyDown("w") && movementEnabled == true) {
-                if(onGround()) {
-                    if(isTouching(Springboards.class)) { 
-                        velocityY = -10 + Springboards.springboardVelocity - (bonusVelocityY * jumpPowerups);
-                    } else {
-                        velocityY = -10 - (bonusVelocityY * jumpPowerups);
-                    }
-                }
-                if(isTouching(ClimbObject.class)) {
-                    velocityY = -5;
-                }
-            }
-        }
-
-        public void Doors() {
-            //int colom = BasicTile.getColom();
-            Doors door = (Doors)getOneIntersectingObject(Doors.class);
+    public void Doors() {        
+        Doors door = (Doors)getOneIntersectingObject(Doors.class);
+        if(this.getWorld().getClass() != LevelSelector.class) {
             if(isTouching(Doors.class)) {
                 if(Greenfoot.isKeyDown("s")) {
                     /*if(door.getColom() == 33 && door.getRow() == 44){
@@ -186,8 +185,11 @@ public class Hero extends Mover {
                 }
             }
         }
+    }
 
-        public void Health() {
+    public void Health() {
+        if(this.getWorld().getClass() != LevelSelector.class) {
+
             if(totalHealth > 3) {            
                 health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
                 health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
@@ -230,59 +232,61 @@ public class Hero extends Mover {
                 } 
             }
         }
+    }
 
-        public void isHit() {       
-            if(isHit == true) {
-                if(hitTeller == 10) {
-                    isHit = false;
-                    hitTeller = 0;                
-                }
-                hitTeller++;
-            }       
-        }
-
-        public void walkAnimatie() {
-            setImage(walkArray[teller]);
-            teller++;
-            if(teller >= 13){
-                teller = 0;
-            }  
-        }
-
-        public int getWidth() {
-            return getImage().getWidth();
-        }
-
-        public int getHeight() {
-            return getImage().getHeight();
-        }
-
-        public void mirrorImage() {
-            for(int i = 0; i < walkArray.length; i++){
-                walkArray[i].mirrorHorizontally();
+    public void isHit() {       
+        if(isHit == true) {
+            if(hitTeller == 10) {
+                isHit = false;
+                hitTeller = 0;                
             }
-        }
+            hitTeller++;
+        }       
+    }
 
-        public void mirrorHero() {
-            if(facingLeft == false && mirror == true){
-                mirrorImage();
-                mirror = false;
-            }
-            if(facingLeft == true && mirror == false){
-                mirrorImage();
-                mirror = true;
-            }
-        }
+    public void walkAnimatie() {
+        setImage(walkArray[teller]);
+        teller++;
+        if(teller >= 13){
+            teller = 0;
+        }  
+    }
 
-        public void Score() {
-            getWorld().showText("Score: " + score, 300, 30);
-            if(isTouching(Keys.class)) {
-                score = score + 50;
-            }
-        }
+    public int getWidth() {
+        return getImage().getWidth();
+    }
 
-        public void getPowerup() {
-            boolean isEmpty = powerupColor.isEmpty();
+    public int getHeight() {
+        return getImage().getHeight();
+    }
+
+    public void mirrorImage() {
+        for(int i = 0; i < walkArray.length; i++){
+            walkArray[i].mirrorHorizontally();
+        }
+    }
+
+    public void mirrorHero() {
+        if(facingLeft == false && mirror == true){
+            mirrorImage();
+            mirror = false;
+        }
+        if(facingLeft == true && mirror == false){
+            mirrorImage();
+            mirror = true;
+        }
+    }
+
+    public void Score() {
+        getWorld().showText("Score: " + score, 300, 30);
+        if(isTouching(Keys.class)) {
+            score = score + 50;
+        }
+    }
+
+    public void getPowerup() {
+        boolean isEmpty = powerupColor.isEmpty();
+        if(this.getWorld().getClass() != LevelSelector.class) {
             for(Powerups powerup : getIntersectingObjects(Powerups.class)) {
                 if(powerup != null) {
                     if(!powerupColor.contains(powerup.getPowerupColor())) {
@@ -310,51 +314,57 @@ public class Hero extends Mover {
                 }
             }
         }
+    }
 
-        public void LocksTutorial() {
+    public void LocksTutorial() {
+        if(this.getWorld().getClass() == TutorialWorld.class) {
             List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
             for(Tile tile : tiles) {
                 if(tile != null) {
                     if(isTouching(Locks.class)) {
-                        if(this.getWorld().getClass() == TutorialWorld.class) {
-                            if(tile.type == TileType.RED && redKeyCheck == true) {                       
-                                tileEngine.removeTileAt(46, 46);
-                                tileEngine.removeTileAt(47, 47);
-                            }                    
-                        }
+                        if(tile.type == TileType.RED && redKeyCheck == true) {                       
+                            tileEngine.removeTileAt(46, 46);
+                            tileEngine.removeTileAt(47, 47);
+                        }                    
+                    }
+                }
+            }
+        }
+    }
+
+    public void LocksWorld4() {
+        if(this.getWorld().getClass() == Level4.class) {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                            tileEngine.removeTileAt(1, 58);
+                            tileEngine.removeTileAt(28, 33);
+                            tileEngine.removeTileAt(28, 64);
+                            tileEngine.removeTileAt(27, 64);
+                        } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
+                            tileEngine.removeTileAt(2, 58);
+                            tileEngine.removeTileAt(28, 35);
+                            tileEngine.removeTileAt(51, 57);
+                            tileEngine.removeTileAt(52, 57);
+                        } else if(tile.type == TileType.RED && redKeyCheck == true){
+                            tileEngine.removeTileAt(3, 58);
+                            tileEngine.removeTileAt(28, 34);
+                        } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
+                            tileEngine.removeTileAt(4, 58);
+                            tileEngine.removeTileAt(28, 36);
+                        }                      
                     }
                 }
             }
         }
 
-        public void LocksWorld4() {
-            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
-            for(Tile tile : tiles) {
-                if(tile != null) {
-                    if(isTouching(Locks.class)) {
-                        if(this.getWorld().getClass() == Level4.class) {
-                            if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
-                                tileEngine.removeTileAt(1, 58);
-                                tileEngine.removeTileAt(28, 33);
-                            } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
-                                tileEngine.removeTileAt(2, 58);
-                                tileEngine.removeTileAt(28, 35);
-                            } else if(tile.type == TileType.RED && redKeyCheck == true){
-                                tileEngine.removeTileAt(3, 58);
-                                tileEngine.removeTileAt(28, 34);
-                            } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
-                                tileEngine.removeTileAt(4, 58);
-                                tileEngine.removeTileAt(28, 36);
-                            }                      
-                        }
-                    }
-                }
-            }
+    }
 
-        }
-
-        public void checkKey() {
-            boolean empty = keyColor.isEmpty();
+    public void checkKey() {
+        boolean empty = keyColor.isEmpty();
+        if(this.getWorld().getClass() != LevelSelector.class) {
             for(Keys key : getIntersectingObjects(Keys.class)) {
                 if(key != null) {
                     if(!keyColor.contains(key.getKeyColor())) {
@@ -388,8 +398,10 @@ public class Hero extends Mover {
                 }
             }
         }
+    }
 
-        public void KeysInterface() {
+    public void KeysInterface() {
+        if(this.getWorld().getClass() != LevelSelector.class) {
             if(redKeyCheck == false) {
                 redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
             } 
@@ -403,8 +415,10 @@ public class Hero extends Mover {
                 blueKeyHud.addKey(new GreenfootImage("hud_keyBlue_disabled.png"), 950, 30);
             }         
         }
+    }
 
-        public void setCheckpoints() {
+    public void setCheckpoints() {
+        if(this.getWorld().getClass() != LevelSelector.class) {
             for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
                 if (hero != null) {
                     Checkpoints.checkpointX = getX();
@@ -414,3 +428,28 @@ public class Hero extends Mover {
             }
         }
     }
+
+    public void levelSelect() {           
+        List<Tile> tiles1 = collisionEngine.getCollidingTiles(this, true);
+        if(this.getWorld().getClass() == LevelSelector.class) {
+
+            for(Tile tile : tiles1) {
+                if(tile != null) {
+                    if(isTouching(MapSelector.class)) {
+                        if(tile.type == TileType.LEVEL1) {                       
+                            Greenfoot.setWorld(new TutorialWorld());
+                        } else if(tile.type == TileType.LEVEL2){
+
+                        } else if(tile.type == TileType.LEVEL3){
+
+                        } else if(tile.type == TileType.LEVEL4){
+
+                        } else if(tile.type == TileType.LEVEL5){
+                            Greenfoot.setWorld(new Level4());
+                        }    
+                    }
+                }
+            }
+        }
+    }
+}

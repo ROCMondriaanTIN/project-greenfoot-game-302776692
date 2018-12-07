@@ -22,7 +22,7 @@ public class TutorialWorld extends World
     public TutorialWorld() {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1000, 800, 1, false);
-        this.setBackground("bg.png");
+        this.setBackground("Backgrounds/bg.png");
         resetStaticVariables();
         int[][] map = {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -104,7 +104,7 @@ public class TutorialWorld extends World
         // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
         addObject(camera, 1200, 2700);
 
-        addObject(hero, 1000, 2400);
+        addObject(hero, 100, 3300);
         addObject(enemy1, 1451, 2438);
         
 
