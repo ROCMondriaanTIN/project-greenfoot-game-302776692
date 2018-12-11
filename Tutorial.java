@@ -54,7 +54,7 @@ public class Tutorial extends Hud
         
         //2e verdieping
         if(hero.get(0).worldX > 3300 && hero.get(0).worldX < 3500 && hero.get(0).worldY < 3000) {
-            GreenfootImage image = new GreenfootImage("Verzamel zoveel mogelijk goude munten voor meer punten.", 30, Color.RED, null);
+            GreenfootImage image = new GreenfootImage("Verzamel alle goude munten om naar het volgende level te gaan.", 30, Color.RED, null);
             setImage(image);
         }
         if(hero.get(0).worldX > 2600 && hero.get(0).worldX < 3000 && hero.get(0).worldY < 3000) {

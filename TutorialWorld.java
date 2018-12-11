@@ -95,7 +95,7 @@ public class TutorialWorld extends World
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
         Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te, ce);
-        Enemy enemy1 = new Enemy();
+        SlimeEnemy slime1 = new SlimeEnemy();
         
 
         // Laat de camera een object volgen. Die moet een Mover instatie zijn of een extentie hiervan.
@@ -105,7 +105,7 @@ public class TutorialWorld extends World
         addObject(camera, 1200, 2700);
 
         addObject(hero, 100, 3300);
-        addObject(enemy1, 1451, 2438);
+        addObject(slime1, 1451, 2438);
         
 
         //Alle HUDs voor de interface
@@ -137,6 +137,7 @@ public class TutorialWorld extends World
         Hero.speedPowerup = 0;
         Hero.jumpPowerups = 0;
         Hero.totalHealth = 3;
+        Hero.coins = 0;
         Hero.redKeyCheck = false;
         Hero.blueKeyCheck = false;
         Hero.greenKeyCheck = false;
@@ -145,7 +146,7 @@ public class TutorialWorld extends World
         
         //Alle checkpoint static variabelen
         Checkpoints.checkpointX = 100;
-        Checkpoints.checkpointY = 4300;
+        Checkpoints.checkpointY = 3300;
         Hero.score = 0;
 
     }

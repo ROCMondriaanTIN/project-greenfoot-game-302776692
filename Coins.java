@@ -23,6 +23,7 @@ public class Coins extends Tile
         if(isTouching(Hero.class)){
             getWorld().removeObject(this);
             Hero.score += 10;
+            Hero.coins += 1;
         }
         
     }    

@@ -12,8 +12,7 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    public static int levelsCompleted;
-    private boolean activated = false;
+    public static int levelsCompleted = 0;
 
     //Deze 3 zijn voor de movement + animations
     private boolean facingLeft;
@@ -27,18 +26,20 @@ public class Hero extends Mover {
     public static boolean yellowKeyCheck;
     public static boolean greenKeyCheck;
 
-    //Deze 3 zijn voor de powerups en score
+    //Deze 7 zijn voor de powerups en score
     public static double bonusVelocityY = 2;
-    public static double bonusVelocityX = 2;
+    public static double bonusVelocityX = 1;
     public static double jumpPowerups = 0;
     public static double speedPowerup = 0;
     public static int healthPowerup = 0;
+    public int extraHealth = totalHealth - 3;
     public static int score;
+    public static int coins;
 
     //Deze 3 zijn voor de health
     public boolean isHit;    
     private int hitTeller = 0;
-    public static int totalHealth = 3 + healthPowerup;
+    public static int totalHealth = 3;
 
     //Deze zijn voor de interface
     private Health health1;
@@ -100,9 +101,6 @@ public class Hero extends Mover {
 
     @Override
     public void act() {    
-        int newColom = getX() / 70;
-        int newRow = getY() / 70;
-
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -120,21 +118,19 @@ public class Hero extends Mover {
         setCheckpoints();
         Doors();
         LocksTutorial();
+        LocksLevel2();
+        LocksLevel3();
         LocksWorld4();
-        levelSelect();
-        getWorld().showText("Colom: " + newColom + ", Row: " + newRow, 500, 30);     
-        getWorld().showText("X: " + getX() + ", Y: " + getY(), 500, 45);  
+        LocksWorld5();
+        levelHandler();
     }
-
+    
     public void handleMovement() {
         if(velocityX >= -0.3 && velocityX <= 0.3 && onGround()){ 
             setImage("p1_front.png");
         }
         if(!onGround()) {
             setImage(walkArray[13]);
-        }
-        if (Greenfoot.isKeyDown("space")) {
-            velocityY = -20;
         }
         if (Greenfoot.isKeyDown("a") && movementEnabled == true) {
             if(onGround()) {
@@ -163,38 +159,61 @@ public class Hero extends Mover {
                 velocityY = -5;
             }
         }
+        if(Greenfoot.isKeyDown("space") && movementEnabled == false) {
+            Greenfoot.setWorld(new Introduction());
+        }
     }
 
     public void Doors() {        
         Doors door = (Doors)getOneIntersectingObject(Doors.class);
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
             if(isTouching(Doors.class)) {
-                if(Greenfoot.isKeyDown("s")) {
-                    /*if(door.getColom() == 33 && door.getRow() == 44){
-                    setLocation(2630, 3116); 
-                    }*/
-                    if(getX() >= 4200 && getX() <= 4300 && getY() >= 1700 && getY() <= 1800){
-                        setLocation(3323, 3186); 
-                    }
-                    else if(getX() >= 3200 && getX() <= 3400 && getY() >= 3100 && getY() <= 3200){
-                        setLocation(2715, 3115);
-                    }
+                if(Greenfoot.isKeyDown("s")) {                    
                     if(getWorld() instanceof TutorialWorld) {
                         setLocation(2900, 3327); 
                     } 
+                    if(getWorld() instanceof Level2) {
+                        if(coins >= 10) {
+                            if(levelsCompleted <= 1) {
+                                levelsCompleted = 2;
+                            }
+                            getWorld().addObject(new LevelComplete(), getWorld().getWidth()/2, getWorld().getHeight()/2);                       
+                        }
+                    }
+                    if(getWorld() instanceof Level3) {
+                        if(coins >= 42) {
+                            if(levelsCompleted <= 2) {
+                                levelsCompleted = 3;
+                            }
+                            getWorld().addObject(new LevelComplete(), getWorld().getWidth()/2, getWorld().getHeight()/2);                       
+                        }
+                    }
+                    if(getWorld() instanceof Level4) {
+                        if(coins >= 70) {
+                            if(levelsCompleted <= 3) {
+                                levelsCompleted = 4;
+                            }
+                            getWorld().addObject(new LevelComplete(), getWorld().getWidth()/2, getWorld().getHeight()/2);                       
+                        }
+                    }                    
+                    if(getWorld() instanceof Level5) {
+                        if(coins >= 90) {
+                            getWorld().addObject(new LevelComplete(), getWorld().getWidth()/2, getWorld().getHeight()/2);
+                        }
+                    }
                 }
             }
         }
     }
 
     public void Health() {
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
 
             if(totalHealth > 3) {            
                 health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
                 health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
                 health3.checkHealth(new GreenfootImage("hud_heartFull.png"), 170, 30);
-                getWorld().showText(" + " + healthPowerup, 215, 30);
+                getWorld().showText(" + " + (totalHealth - 3), 215, 30);
             } else if(totalHealth == 3) {
                 health1.checkHealth(new GreenfootImage("hud_heartFull.png"), 50, 30);
                 health2.checkHealth(new GreenfootImage("hud_heartFull.png"), 110, 30);
@@ -218,7 +237,7 @@ public class Hero extends Mover {
                 }
                 totalHealth = totalHealth - 1;            
             }
-            if(isTouching(Enemy.class)) {
+            if(isTouching(SlimeEnemy.class) || isTouching(FlyEnemy.class)) {
                 if(isHit == false) {
                     if(Checkpoints.checkpointX > 1 && Checkpoints.checkpointY > 1) {
                         isHit = true;
@@ -279,6 +298,19 @@ public class Hero extends Mover {
 
     public void Score() {
         getWorld().showText("Score: " + score, 300, 30);
+        if(this.getWorld().getClass() == TutorialWorld.class) {
+             getWorld().showText("Coins: " + coins + "/9", 300, 50);
+         }
+         if(this.getWorld().getClass() == Level2.class) {
+             getWorld().showText("Coins: " + coins + "/10", 300, 50);
+         }
+         if(this.getWorld().getClass() == Level3.class) {
+             getWorld().showText("Coins: " + coins + "/42", 300, 50);
+         }
+         if(this.getWorld().getClass() == Level5.class) {
+             getWorld().showText("Coins: " + coins + "/90", 300, 50);
+         }
+        
         if(isTouching(Keys.class)) {
             score = score + 50;
         }
@@ -286,7 +318,7 @@ public class Hero extends Mover {
 
     public void getPowerup() {
         boolean isEmpty = powerupColor.isEmpty();
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
             for(Powerups powerup : getIntersectingObjects(Powerups.class)) {
                 if(powerup != null) {
                     if(!powerupColor.contains(powerup.getPowerupColor())) {
@@ -302,7 +334,7 @@ public class Hero extends Mover {
                         continue;
                     }
                     if(powerupColor.get(i).equals("Red")) { 
-                        healthPowerup += 1;
+                        totalHealth += 1;
                         powerupColor.remove(i);
                         continue;
                     }
@@ -331,9 +363,95 @@ public class Hero extends Mover {
             }
         }
     }
+    
+    public void LocksLevel2() {
+        if(this.getWorld().getClass() == Level2.class) {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(tile.type == TileType.RED && redKeyCheck == true) {                       
+                            tileEngine.removeTileAt(32, 44);
+                            tileEngine.removeTileAt(33, 44);
+                            tileEngine.removeTileAt(34, 44);
+                            tileEngine.removeTileAt(35, 44);
+                            tileEngine.removeTileAt(36, 44);
+                        }    
+                        if(tile.type == TileType.GREEN && greenKeyCheck == true) {                       
+                            tileEngine.removeTileAt(46, 40);
+                            tileEngine.removeTileAt(39, 42);                            
+                        }  
+                        if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                            tileEngine.removeTileAt(47, 43);
+                            tileEngine.removeTileAt(38, 42);                            
+                        } 
+                    }
+                }
+            }
+        }
+    }
+    
+    public void LocksLevel3() {
+        if(this.getWorld().getClass() == Level3.class) {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(tile.type == TileType.RED && redKeyCheck == true) {                       
+                            tileEngine.removeTileAt(44, 29);
+                            tileEngine.removeTileAt(42, 30);
+                        }   
+                        if(tile.type == TileType.GREEN && greenKeyCheck == true) {                       
+                            tileEngine.removeTileAt(9, 12);
+                            tileEngine.removeTileAt(8, 11);
+                        }
+                        if(tile.type == TileType.YELLOW && yellowKeyCheck == true) {                       
+                            tileEngine.removeTileAt(10, 12);
+                            tileEngine.removeTileAt(7, 11);
+                        }
+                        if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                            tileEngine.removeTileAt(46, 10);
+                            tileEngine.removeTileAt(47, 12);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public void LocksWorld4() {
         if(this.getWorld().getClass() == Level4.class) {
+            List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+            for(Tile tile : tiles) {
+                if(tile != null) {
+                    if(isTouching(Locks.class)) {
+                        if(tile.type == TileType.BLUE && blueKeyCheck == true) {                       
+                            tileEngine.removeTileAt(2, 48);
+                            tileEngine.removeTileAt(2, 47);
+                            tileEngine.removeTileAt(29, 23);
+                        } else if(tile.type == TileType.GREEN && greenKeyCheck == true){
+                            tileEngine.removeTileAt(3, 48);
+                            tileEngine.removeTileAt(3, 47);
+                            tileEngine.removeTileAt(26, 23);
+                        } else if(tile.type == TileType.RED && redKeyCheck == true){
+                            tileEngine.removeTileAt(4, 48);
+                            tileEngine.removeTileAt(4, 47);
+                            tileEngine.removeTileAt(27, 23);
+                        } else if(tile.type == TileType.YELLOW && yellowKeyCheck == true){
+                            tileEngine.removeTileAt(28, 23);
+                            tileEngine.removeTileAt(1, 48);
+                            tileEngine.removeTileAt(1, 47);
+                            tileEngine.addTileAt(new Doors("door_openMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT), 1, 48);
+                            tileEngine.addTileAt(new Doors("door_openTop.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT), 1, 47);
+                        }                      
+                    }
+                }
+            }
+        }
+    }
+    
+    public void LocksWorld5() {
+        if(this.getWorld().getClass() == Level5.class) {
             List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
             for(Tile tile : tiles) {
                 if(tile != null) {
@@ -364,7 +482,7 @@ public class Hero extends Mover {
 
     public void checkKey() {
         boolean empty = keyColor.isEmpty();
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
             for(Keys key : getIntersectingObjects(Keys.class)) {
                 if(key != null) {
                     if(!keyColor.contains(key.getKeyColor())) {
@@ -401,7 +519,7 @@ public class Hero extends Mover {
     }
 
     public void KeysInterface() {
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
             if(redKeyCheck == false) {
                 redKeyHud.addKey(new GreenfootImage("hud_keyRed_disabled.png"), 800, 30);
             } 
@@ -418,7 +536,7 @@ public class Hero extends Mover {
     }
 
     public void setCheckpoints() {
-        if(this.getWorld().getClass() != LevelSelector.class) {
+        if(this.getWorld().getClass() != Introduction.class) {
             for (Actor hero : getIntersectingObjects(Checkpoints.class)) {
                 if (hero != null) {
                     Checkpoints.checkpointX = getX();
@@ -429,23 +547,31 @@ public class Hero extends Mover {
         }
     }
 
-    public void levelSelect() {           
-        List<Tile> tiles1 = collisionEngine.getCollidingTiles(this, true);
-        if(this.getWorld().getClass() == LevelSelector.class) {
-
-            for(Tile tile : tiles1) {
+    public void levelHandler() {           
+        List<Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+        
+        if(this.getWorld().getClass() == Introduction.class) {
+            for(Tile tile : tiles) {
                 if(tile != null) {
                     if(isTouching(MapSelector.class)) {
-                        if(tile.type == TileType.LEVEL1) {                       
+                        if(tile.type == TileType.LEVEL1) {           
                             Greenfoot.setWorld(new TutorialWorld());
                         } else if(tile.type == TileType.LEVEL2){
-
+                            if(levelsCompleted >= 1) {
+                                Greenfoot.setWorld(new Level2());
+                            }
                         } else if(tile.type == TileType.LEVEL3){
-
+                            if(levelsCompleted >= 2) {
+                                Greenfoot.setWorld(new Level3());
+                            }
                         } else if(tile.type == TileType.LEVEL4){
-
+                            if(levelsCompleted >= 3) {
+                                Greenfoot.setWorld(new Level4());
+                            }
                         } else if(tile.type == TileType.LEVEL5){
-                            Greenfoot.setWorld(new Level4());
+                            if(levelsCompleted >= 4) {
+                                Greenfoot.setWorld(new Level5());
+                            }
                         }    
                     }
                 }

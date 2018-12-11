@@ -151,6 +151,22 @@ public class TileFactory {
             case 107:
             tile = new Tile("ropeVertical.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
+            case 130:
+            tile = new Tile("snowCenter.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
+            case 136:
+            tile = new Tile("snowHalf.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
+            case 140:
+            tile = new Tile("snowHillLeft.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
+            case 147:
+            tile = new Tile("snowMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
             case 169:
             tile = new Tile("tochLit.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
@@ -221,6 +237,7 @@ public class TileFactory {
             break;
             case 232:
             tile = new Tile("weightChained.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
             break;
             case 257:
             tile = new Tile("keyYellow.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
@@ -242,16 +259,32 @@ public class TileFactory {
             tile = new MapSelector("Levels/level_1.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL1);
             break;
             case 276:
-            tile = new MapSelector("Levels/level_2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL2);
+            if(Hero.levelsCompleted >= 1) {
+                tile = new MapSelector("Levels/level_2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL2);
+            } else {
+                tile = new MapSelector("Levels/level_locked.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL2);
+            }
             break;
             case 277:
-            tile = new MapSelector("Levels/level_3.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL3);
+            if(Hero.levelsCompleted >= 2) {
+                tile = new MapSelector("Levels/level_3.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL3);
+            } else {
+                tile = new MapSelector("Levels/level_locked.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL3);
+            }
             break;
             case 278:
-            tile = new MapSelector("Levels/level_4.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL4);
+            if(Hero.levelsCompleted >= 3) {
+                tile = new MapSelector("Levels/level_4.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL4);
+            } else {
+                tile = new MapSelector("Levels/level_locked.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL4);
+            }
             break;
             case 279:
-            tile = new MapSelector("Levels/level_5.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL5);
+            if(Hero.levelsCompleted >= 4) {
+                tile = new MapSelector("Levels/level_5.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL5);
+            } else {
+                tile = new MapSelector("Levels/level_locked.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT, TileType.LEVEL5);
+            }
             break;
             case 280:
             tile = new Tile("invisible.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);

@@ -5,7 +5,7 @@ import greenfoot.*;
  *
  * @author R. Springer
  */
-public class Enemy extends Mover {
+public class SlimeEnemy extends Mover {
 
     private int walkRange;
     private int xMin;
@@ -13,7 +13,7 @@ public class Enemy extends Mover {
     private boolean firstAct;
     private int speed;
 
-    public Enemy() {
+    public SlimeEnemy() {
         super();
         setImage("Enemies/slimeWalk2.png");
         getImage().mirrorHorizontally();

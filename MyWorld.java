@@ -85,8 +85,8 @@ public class MyWorld extends World {
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
         Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te, ce);
-        Enemy enemy1 = new Enemy();
-        Enemy enemy2 = new Enemy();
+        SlimeEnemy slime1 = new SlimeEnemy();
+        SlimeEnemy slime2 = new SlimeEnemy();
         
 
         // Laat de camera een object volgen. Die moet een Mover instatie zijn of een extentie hiervan.
@@ -96,8 +96,8 @@ public class MyWorld extends World {
         addObject(camera, 100, 300);
 
         addObject(hero, 100, 300);
-        addObject(enemy1, 1600, 2088);
-        addObject(enemy2, 2200, 2228);
+        addObject(slime1, 1600, 2088);
+        addObject(slime2, 2200, 2228);
         
         //Alle HUDs voor de interface
         addObject(redKeyHud, 800, 30);

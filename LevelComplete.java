@@ -13,5 +13,6 @@ public class LevelComplete extends Actor
     
     public LevelComplete() {
         setImage("level_complete.png");     
+        Hero.movementEnabled = false;
     }
 }  

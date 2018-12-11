@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class LevelSelector extends World
+public class Introduction extends World
 {
 
     // Declareren van CollisionEngine
@@ -19,10 +19,11 @@ public class LevelSelector extends World
      * Constructor for objects of class MyWorld.
      *
      */
-    public LevelSelector() {
+    public Introduction() {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1000, 800, 1, false);
         this.setBackground("Backgrounds/level_select.png");
+        resetStaticVariables();
         int[][] map = { 
                 {280,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,280},
                 {280,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,280},
@@ -54,7 +55,6 @@ public class LevelSelector extends World
         // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
         // moet de klasse Mover extenden voor de camera om te werken
         Hero hero = new Hero(redKeyHud, greenKeyHud, yellowKeyHud, blueKeyHud, health1, health2, health3, te, ce);
-        Enemy enemy1 = new Enemy();
         
 
         // Laat de camera een object volgen. Die moet een Mover instatie zijn of een extentie hiervan.
@@ -62,13 +62,7 @@ public class LevelSelector extends World
 
         // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
         addObject(camera, 1200, 2700);
-
         addObject(hero, 100, 600);
-        
-
-        //Alle HUDs voor de interface
-        
-        
 
         // Force act zodat de camera op de juist plek staat.
         
@@ -84,11 +78,8 @@ public class LevelSelector extends World
         ce.update();
     }
     
-    private void resetStaticVariables() {
-        
+    private void resetStaticVariables() {       
         Hero.movementEnabled = true;
-        
-
     }
     
 }
